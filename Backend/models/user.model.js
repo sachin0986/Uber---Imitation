@@ -8,49 +8,41 @@ const userSchema = new mongoose.Schema({
         firstname: {
             type: String,
             required: true,
-            minlength: [3, 'Full name must be at least 3 characters long'],
+            minlength: [ 3, 'First name must be at least 3 characters long' ],
         },
         lastname: {
             type: String,
-            minlength: [3, 'Last name must be at least 3 characters long'],
+            minlength: [ 3, 'Last name must be at least 3 characters long' ],
         }
     },
-
     email: {
         type: String,
         required: true,
+        unique: true,
+        minlength: [ 5, 'Email must be at least 5 characters long' ],
     },
-
     password: {
         type: String,
         required: true,
         select: false,
     },
-
-    socketId:{
+    socketId: {
         type: String,
     },
+})
 
-});
-
-
-userSchema.methods.genenrateAuthToken = function() {
-    const token = jwt.sign({_id: this.id }, process.env.JWT_SECRET)
+userSchema.methods.generateAuthToken = function () {
+    const token = jwt.sign({ _id: this._id }, process.env.JWT_SECRET, { expiresIn: '24h' });
     return token;
 }
 
-userSchema.methods.comparePassword = async function(password) {
-    const isMatch = await bcrypt.compare(password, this.password);
-    console.log(isMatch);
-    return isMatch;
+userSchema.methods.comparePassword = async function (password) {
+    return await bcrypt.compare(password, this.password);
 }
 
-userSchema.statics.hashPassword = async function(password) {
-    const hashPass = await bcrypt.hash(password, 10);
-    console.log(hashPass);
-    return hashPass;
+userSchema.statics.hashPassword = async function (password) {
+    return await bcrypt.hash(password, 10);
 }
-
 
 const userModel = mongoose.model('user', userSchema);
 module.exports = userModel;
