@@ -321,3 +321,168 @@ If the input validation fails, the endpoint returns a 400 status code with detai
 - **Input Validation:** All required fields must be provided and meet the specified criteria.
 - **Vehicle Type:** Only 'car', 'bike', or 'auto' are accepted as valid vehicle types.
 - **Password Security:** The password should be securely handled
+
+# /captains/login Endpoint Documentation
+
+## Description
+The `/captains/login` endpoint authenticates a captain (driver) using their email and password. On successful authentication, it returns a JWT token and the captain's details.
+
+## Endpoint Details
+
+- **Method:** POST  
+- **URL:** `/captains/login`
+
+## Request Body
+
+```json
+{
+  "email": "Required. A valid email address.",
+  "password": "Required. Must be at least 6 characters long."
+}
+```
+
+### Example Request
+
+```json
+{
+  "email": "captain@example.com",
+  "password": "securePass123"
+}
+```
+
+## Responses
+
+### Success (HTTP 200)
+
+```json
+{
+  "token": "JWT token here",
+  "captain": {
+    "_id": "captain_id",
+    "fullname": {
+      "firstname": "Alice",
+      "lastname": "Smith"
+    },
+    "email": "captain@example.com",
+    "vehicle": {
+      "color": "Red",
+      "plate": "XYZ1234",
+      "capacity": 4,
+      "vehicleType": "car"
+    }
+    // Additional captain details if applicable
+  }
+}
+```
+
+### Error Responses
+
+#### Unauthorized (HTTP 401)
+
+```json
+{
+  "message": "Invalid email or password"
+}
+```
+
+#### Validation Error (HTTP 400)
+
+```json
+{
+  "errors": [
+    {
+      "msg": "Invalid email address",
+      "param": "email",
+      "location": "body"
+    },
+    {
+      "msg": "Password must be at least 6 characters long",
+      "param": "password",
+      "location": "body"
+    }
+  ]
+}
+```
+
+---
+
+# /captains/profile Endpoint Documentation
+
+## Description
+The `/captains/profile` endpoint returns the profile data of the authenticated captain.
+
+## Endpoint Details
+
+- **Method:** GET  
+- **URL:** `/captains/profile`
+- **Authentication:** Required. A valid JWT token must be provided via cookie or Authorization header.
+
+## Responses
+
+### Success (HTTP 200)
+
+```json
+{
+  "captain": {
+    "_id": "captain_id",
+    "fullname": {
+      "firstname": "Alice",
+      "lastname": "Smith"
+    },
+    "email": "captain@example.com",
+    "vehicle": {
+      "color": "Red",
+      "plate": "XYZ1234",
+      "capacity": 4,
+      "vehicleType": "car"
+    }
+    // Additional captain details if applicable
+  }
+}
+```
+
+### Error (HTTP 401)
+
+```json
+{
+  "message": "Invalid or expired authentication token"
+}
+```
+
+---
+
+# /captains/logout Endpoint Documentation
+
+## Description
+The `/captains/logout` endpoint logs out the authenticated captain by blacklisting the JWT token and clearing the authentication cookie.
+
+## Endpoint Details
+
+- **Method:** GET  
+- **URL:** `/captains/logout`
+- **Authentication:** Required.
+
+## Responses
+
+### Success (HTTP 200)
+
+```json
+{
+  "message": "Logout successfully"
+}
+```
+
+### Error (HTTP 401)
+
+```json
+{
+  "message": "Invalid or expired authentication token"
+}
+```
+
+---
+
+## Additional Notes
+
+- **Authentication:** All endpoints except `/captains/login` require a valid JWT token.
+- **Token Handling:** On login, the JWT token is set as a cookie. On logout, the token is blacklisted and the cookie
