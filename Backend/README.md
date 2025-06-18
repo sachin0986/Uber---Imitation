@@ -157,3 +157,71 @@ If the input validation fails (e.g., invalid email format or password too short)
 - **Token Generation:** A JSON web token (JWT) is generated upon successful authentication.
 - **Password Verification:** The user's provided password is compared against the stored hash using bcrypt.
 - **Cookie Handling:** On successful login, the token is also set as an HTTP cookie.
+
+# /users/profile Endpoint Documentation
+
+## Description
+The `/users/profile` endpoint returns the profile data of the authenticated user.
+
+## Endpoint Details
+
+- **Method:** GET  
+- **URL:** `/users/profile`
+- **Authentication:** Required. This endpoint requires a valid JWT token sent via cookie or authorization header.
+
+## Responses
+
+### Success (HTTP 200)
+On successful authentication, the endpoint returns the user's profile data as JSON.
+
+```json
+{
+  "_id": "user_id",
+  "fullname": {
+    "firstname": "John",
+    "lastname": "Doe"
+  },
+  "email": "john.doe@example.com",
+  // Any additional user details
+}
+```
+
+### Error (HTTP 401)
+If the user is not authenticated or the token is invalid, a 401 Unauthorized error is returned.
+
+```json
+{
+  "message": "Unauthorized"
+}
+```
+
+# /users/logout Endpoint Documentation
+
+## Description
+The `/users/logout` endpoint logs out the authenticated user by clearing the authentication cookie. Optionally, the JWT token may be added to a blacklist to invalidate it.
+
+## Endpoint Details
+
+- **Method:** GET  
+- **URL:** `/users/logout`
+- **Authentication:** Required.
+
+## Responses
+
+### Success (HTTP 200)
+On successful logout, the endpoint returns a confirmation message.
+
+```json
+{
+  "message": "User logged out successfully"
+}
+```
+
+### Error (HTTP 401)
+If the user is not authenticated, a 401 Unauthorized error is returned.
+
+```json
+{
+  "message": "Unauthorized"
+}
+```
