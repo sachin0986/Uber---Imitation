@@ -225,3 +225,99 @@ If the user is not authenticated, a 401 Unauthorized error is returned.
   "message": "Unauthorized"
 }
 ```
+
+
+# /captains/register Endpoint Documentation
+
+## Description
+The `/captains/register` endpoint allows new captains (drivers) to register by providing their personal details, email, password, and vehicle information. The endpoint validates the input, creates a new captain record, and returns the created captain's data.
+
+## Endpoint Details
+
+- **Method:** POST  
+- **URL:** `/captains/register`
+
+## Request Body
+
+The endpoint expects a JSON payload with the following structure:
+
+```json
+{
+  "fullname": {
+    "firstname": "Required. Must be at least 3 characters.",
+    "lastname": "Optional. Must be at least 3 characters if provided."
+  },
+  "email": "Required. A valid email address.",
+  "password": "Required. Must be at least 6 characters long.",
+  "vehicle": {
+    "color": "Required. Must be at least 3 characters.",
+    "plate": "Required. Must be at least 3 characters.",
+    "capacity": "Required. Integer, at least 1.",
+    "vehicleType": "Required. Must be one of: 'car', 'bike', 'auto'."
+  }
+}
+```
+
+### Example Request
+
+```json
+{
+  "fullname": {
+    "firstname": "Alice",
+    "lastname": "Smith"
+  },
+  "email": "alice.smith@example.com",
+  "password": "securePass123",
+  "vehicle": {
+    "color": "Red",
+    "plate": "XYZ1234",
+    "capacity": 4,
+    "vehicleType": "car"
+  }
+}
+```
+
+## Responses
+
+### Success (HTTP 201)
+On successful registration, the response will include the created captain's data.
+
+```json
+{
+  "captain": {
+    "fullname": {
+      "firstname": "Alice",
+      "lastname": "Smith"
+    },
+    "email": "alice.smith@example.com",
+    "vehicle": {
+      "color": "Red",
+      "plate": "XYZ1234",
+      "capacity": 4,
+      "vehicleType": "car"
+    }
+    // Additional captain details if applicable
+  }
+}
+```
+
+### Validation Error (HTTP 400)
+If the input validation fails, the endpoint returns a 400 status code with details about the validation errors.
+
+```json
+{
+  "errors": [
+    {
+      "msg": "Invalid email address",
+      "param": "email",
+      "location": "body"
+    }
+    // Additional error objects if applicable
+  ]
+}
+```
+
+## Additional Notes
+- **Input Validation:** All required fields must be provided and meet the specified criteria.
+- **Vehicle Type:** Only 'car', 'bike', or 'auto' are accepted as valid vehicle types.
+- **Password Security:** The password should be securely handled
