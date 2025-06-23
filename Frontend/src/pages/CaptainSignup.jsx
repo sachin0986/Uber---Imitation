@@ -1,9 +1,98 @@
-import React from "react";
+import React, { useState } from "react";
+import { Link } from 'react-router-dom'
+
+
+const style = {
+    oldInput: `bg-[#eeeeee] mb-7 rounded px-4 py-2 border w-full text-base placeholder:text-sm`,
+    loginInputStyle: `bg-[#eeeeee] mb-7 rounded px-4 py-2 border w-1/2 text-base placeholder:text-sm`,
+    buttonStyle: `bg-black text-white font-semibold mb-7 rounded px-4 py-3 w-full text-lg`
+};
 
 const CaptainSignup = () => {
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [firstName, setfirstName] = useState('');
+    const [lastName, setlastName] = useState('');
+    const [captainData, setcaptainData] = useState({});
+
+    const submitHnadeler = (e) => {
+        e.preventDefault();
+        setcaptainData({
+            fullName: {
+                firstName: firstName,
+                lastName: lastName
+            },
+            userEmail: email,
+            password: password
+        }
+        )
+        console.log(captainData);
+        setEmail('');
+        setPassword('');
+        setfirstName('');
+        setlastName('');
+    }
     return(
-        <div>
-            this is Captain Signup page
+         <div className="p-7 h-screen flex flex-col justify-between">
+            <div>
+                <img className="w-16 mb-10" src="/src/assets/pngimg.com - uber_PNG24.png" alt="uber-home-image" />
+
+                <form onSubmit={(e) => {
+                    submitHnadeler(e)
+                }}>
+
+                  <h3 className="text-base font-medium mb-2">what's our Captain's name</h3>
+                  <div className="flex gap-3">
+                    <input 
+                        required 
+                        className={style.loginInputStyle}
+                        type="text" 
+                        placeholder="First name"
+                        value={firstName}
+                        onChange={(e) => setfirstName(e.target.value)}
+                    />
+
+
+                    <input 
+                        required 
+                        className={style.loginInputStyle}
+                        type="text" 
+                        placeholder="Last name" 
+                        value={lastName}
+                        onChange={(e) => setlastName(e.target.value)}
+                    />
+                  </div>
+
+                    <h2 className="text-base font-medium mb-2">What's our Captain's email?</h2>
+                    <input 
+                        required 
+                        className={style.oldInput}
+                        type="email" 
+                        placeholder="email@example.com" 
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                    />
+                    <h3 className="text-base font-medium mb-2">Enter Password</h3>
+                    <input 
+                        required 
+                        className={style.oldInput}
+                        type="password" 
+                        placeholder="password" 
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                    />
+                    <button className={style.buttonStyle}>Create Account</button>
+                </form>
+
+                <p className="text-center">
+                    Already a member ? <Link to='/captain-login' className="text-blue-600">Login here</Link>
+                </p>
+            </div>
+
+            <div>
+          <p className='text-[10px] leading-tight'>This site is protected by reCAPTCHA and the <span className='underline'>Google Privacy
+            Policy</span> and <span className='underline'>Terms of Service apply</span>.</p>
+        </div>
         </div>
     )
 }
