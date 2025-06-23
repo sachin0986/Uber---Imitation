@@ -1,6 +1,8 @@
 import React, { useState } from "react";
-import { Link } from 'react-router-dom'
-
+import { Link, useNavigate } from 'react-router-dom'
+import axios from 'axios';
+import { UserDataContext } from '../context/UserContext';
+import { VITE_BASE_URL } from "../Utils/contants";
 
 const style = {
     oldInput: `bg-[#eeeeee] mb-7 rounded px-4 py-2 border w-full text-base placeholder:text-sm`,
@@ -15,22 +17,33 @@ const UserSignup = () => {
     const [lastName, setlastName] = useState('');
     const [userData, setuserData] = useState({});
 
-    const submitHnadeler = (e) => {
+    const navigate = useNavigate();
+    const {user, setUser} = React.useContext(UserDataContext)
+
+    const submitHnadeler = async (e) => {
         e.preventDefault();
-        setuserData({
-            fullName: {
-                firstName: firstName,
-                lastName: lastName
+        const newUser = {
+            fullname: {
+                firstname: firstName,
+                lastname: lastName
             },
-            userEmail: email,
+            email: email,
             password: password
         }
-        )
+
+        const response = await axios.post(VITE_BASE_URL + `/users/register`, newUser);
+        if(response.status === 201){
+            const data = response.data;
+            setUser(data.user);
+            localStorage.setItem('token', data.token);
+            navigate('/home');
+        }
+
         console.log(userData);
-        setEmail('');
-        setPassword('');
-        setfirstName('');
-        setlastName('');
+        //setEmail('');
+        //setPassword('');
+        //setfirstName('');
+        //setlastName('');
     }
     return(
          <div className="p-7 h-screen flex flex-col justify-between">
