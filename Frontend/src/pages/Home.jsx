@@ -26,22 +26,22 @@ const Home = () => {
     if (panelOpen) {
       gsap.to(panelRef.current, {
         height: '70%',
-        duration: 0.4,
+        duration: 0.1,
         ease: 'power2.out'
       });
       gsap.to(panelCloseRef.current, {
         opacity: 1,
-        duration: 0.3
+        duration: 0.1
       });
     } else {
       gsap.to(panelRef.current, {
         height: '0%',
-        duration: 0.4,
+        duration: 0.1,
         ease: 'power2.inOut'
       });
       gsap.to(panelCloseRef.current, {
         opacity: 0,
-        duration: 0.3
+        duration: 0.1
       });
     }
   }, [panelOpen]);
