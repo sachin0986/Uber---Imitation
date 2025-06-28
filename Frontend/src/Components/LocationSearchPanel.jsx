@@ -15,12 +15,12 @@ const LocationSearchPanel = (props) => {
     return(
         <div>
             {
-                locations.map((local) => {
+                locations.map((local, indx) => {
                     return(
                     <div onClick={() => {
                         props.setVehiclePanelOpen(true);
                         props.setPanelOpen(false);
-                    }} key={local} className="flex gap-4 items-center my-4 justify-start">
+                    }} key={indx} className="flex gap-4 items-center my-4 justify-start">
                             <TiLocation className="bg-[#eee] h-9 w-12 p-2 rounded-full" />
                             <h4 className="font-medium">{local}</h4> 
                     </div>

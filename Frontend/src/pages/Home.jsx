@@ -72,7 +72,8 @@ else{
         alt="uber-logo"
       />
 
-      <div className="h-screen w-screen">
+      <div 
+      className="h-screen w-screen">
         <img
           className="h-full w-full object-cover"
           src="https://miro.medium.com/v2/resize:fit:1400/0*gwMx05pqII5hbfmX.gif"
@@ -138,6 +139,12 @@ else{
         </div>
       </div>
       <div ref={vehiclePanelRef} className="fixed w-full z-10 bg-white translate-y-full bottom-0 px-3 py-6">
+                <div
+                  className="absolute top-2 right-5 cursor-pointer"
+                  onClick={() => setVehiclePanelOpen(false)}
+                >
+                  <RiArrowDownWideFill size={24} />
+                </div>
                 <div className="flex w-full p-3 active:border-2  border-black mb-3 rounded-2xl items-center justify-between">
                 <img className="h-16" src="https://www.uber-assets.com/image/upload/f_auto,q_auto:eco,c_fill,h_768,w_768/v1555367310/assets/30/51e602-10bb-4e65-b122-e394d80a9c47/original/Final_UberX.png" alt="" />
                 <div className="w-1/2">
