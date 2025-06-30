@@ -5,15 +5,9 @@ import { RiUserLocationFill } from "react-icons/ri";
 import { BsCashStack } from "react-icons/bs";
 
 
-const ConfirmRide = (porps) => {
+const ConfirmRide = (props) => {
   return (
     <div>
-      <h5
-        onClick={() => porps.setVehiclePanelOpen(false)}
-        className="absolute opacity-0 right-6 top-6 cursor-pointer transition-opacity duration-300"
-      >
-        <RiArrowDownWideFill size={20} />
-      </h5>
       <h3 className="text-2xl font-semibold">Confirm you Ride</h3>
       <div className="flex justify-between gap-2 flex-col items-center ">
         <img
@@ -44,7 +38,12 @@ const ConfirmRide = (porps) => {
                 </div>
           </div>
         </div>
-        <button className="w-full font-semibold mt-5 bg-green-400 rounded-lg p-2">Confirm</button>
+        <button 
+        onClick={() => {
+          props.setVehicleFound(true);
+          props.setConfirmRidePanel(false)
+        }}
+        className="w-full font-semibold mt-5 bg-green-400 rounded-lg p-2">Confirm</button>
       </div>
     </div>
   );

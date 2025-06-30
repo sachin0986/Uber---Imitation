@@ -7,6 +7,8 @@ import { LuSquareSquare } from "react-icons/lu";
 import LocationSearchPanel from "../Components/LocationSearchPanel";
 import VehiclePanel from "../Components/VehiclePanel";
 import ConfirmRide from "../Components/ConfirmRide";
+import LookingForDriver from "../Components/LookingFroDriver";
+import SearchingForDriver from "../Components/SearchingForDriver";
 
 const style = {
   inputStyle: `bg-[#eee] px-12 py-2 text-base rounded-lg w-full`,
@@ -17,13 +19,18 @@ const Home = () => {
   const [pickup, setPickUp] = useState('');
   const [destination, setDestination] = useState('');
   const [panelOpen, setPanelOpen] = useState(false);
-  const panelRef = useRef(null);
   const [vehiclePanelOpen, setVehiclePanelOpen] = useState(false);
   const [ConfirmRidePanel, setConfirmRidePanel] = useState(false);
-
+  const [vehicleFound, setVehicleFound] = useState(false);
+  const [saerchingForDriver, setSaerchingForDriver] = useState(false);
+  
+  const panelRef = useRef(null);
   const panelCloseRef = useRef(null);
   const vehiclePanelRef = useRef(null);
   const ConfirmRidePanelRef = useRef(null);
+  const vehicleFoundRef = useRef(null);
+  const searchingForDriverRef = useRef(null);
+
 
   const submitHandler = (e) => {
     e.preventDefault();
@@ -81,6 +88,34 @@ else{
     })
 }
   }, [ConfirmRidePanel])
+
+
+    useGSAP(() => {
+    if(vehicleFound){
+        gsap.to(vehicleFoundRef.current, {
+        transform: 'translateY(0)'
+    })
+}
+else{
+    gsap.to(vehicleFoundRef.current, {
+        transform: 'translateY(100%)'
+    })
+}
+  }, [vehicleFound])
+
+
+      useGSAP(() => {
+    if(saerchingForDriver){
+        gsap.to(searchingForDriverRef.current, {
+        transform: 'translateY(0)'
+    })
+}
+else{
+    gsap.to(searchingForDriverRef.current, {
+        transform: 'translateY(100%)'
+    })
+}
+  }, [saerchingForDriver])
 
 
 
@@ -159,18 +194,43 @@ else{
         </div>
       </div>
       <div ref={vehiclePanelRef} className="fixed w-full z-10 bg-white translate-y-full bottom-0 px-3 py-6">
-                <VehiclePanel setConfirmRidePanel={setConfirmRidePanel} setVehiclePanelOpen={setVehiclePanelOpen}/>
+                <VehiclePanel setPanelOpen={setPanelOpen} setConfirmRidePanel={setConfirmRidePanel} setVehiclePanelOpen={setVehiclePanelOpen}/>
             </div>
 
         <div ref={ConfirmRidePanelRef} className="fixed w-full z-10 bg-white translate-y-full bottom-0 px-3 py-6">
           <div className="relative">
             <h5
-              onClick={() => setConfirmRidePanel(false)}
+              onClick={() => {
+                setConfirmRidePanel(false);
+                setVehiclePanelOpen(true);
+              }}
               className="absolute right-4 top-2 cursor-pointer"
             >
               <RiArrowDownWideFill size={20} />
             </h5>
-            <ConfirmRide setConfirmRidePanel={setConfirmRidePanel} />
+            <ConfirmRide setVehiclePanelOpen={setVehiclePanelOpen} setConfirmRidePanel={setConfirmRidePanel} setVehicleFound={setVehicleFound}/>
+          </div>
+        </div>
+
+        <div ref={vehicleFoundRef} className="fixed w-full z-10 bg-white translate-y-full bottom-0 px-3 py-6">
+          <div className="relative">
+            <h5
+              onClick={() => {
+                setVehicleFound(false);
+                setPanelOpen(true);
+              }}
+              className="absolute right-4 top-2 cursor-pointer"
+            >
+              <span className="border-2 bg-black text-white text-sm p-2 rounded-lg">Cancle Ride</span>
+            </h5>
+            <LookingForDriver />
+          </div>
+        </div>
+
+
+         <div ref={searchingForDriverRef} className="fixed w-full z-10 bg-white bottom-0 px-3 py-6">
+          <div className="relative">
+            <SearchingForDriver setSaerchingForDriver={setSaerchingForDriver}/>
           </div>
         </div>
         
