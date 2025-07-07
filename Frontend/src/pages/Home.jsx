@@ -228,7 +228,7 @@ else{
         </div>
 
 
-         <div ref={searchingForDriverRef} className="fixed w-full z-10 bg-white bottom-0 px-3 py-6">
+         <div ref={searchingForDriverRef} className="fixed w-full z-10 translate-y-full bg-white bottom-0 px-3 py-6">
           <div className="relative">
             <SearchingForDriver setSaerchingForDriver={setSaerchingForDriver}/>
           </div>

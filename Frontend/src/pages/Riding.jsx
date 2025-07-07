@@ -26,8 +26,8 @@ const Riding = () => {
           src="https://miro.medium.com/v2/resize:fit:1400/0*gwMx05pqII5hbfmX.gif"
           alt="map-image" />
             </div>
-            <div className="h-1/2">
-                      <div className="flex items-center justify-between ">
+            <div className="h-1/2 p-4">
+                      <div className="flex items-center justify-between">
                                     <img className="h-20" src="https://www.uber-assets.com/image/upload/f_auto,q_auto:eco,c_fill,h_768,w_768/v1555367310/assets/30/51e602-10bb-4e65-b122-e394d80a9c47/original/Final_UberX.png" alt="" />
                                     <div className="text-right">
                                         <h5 className="text-lg font-medium">Sachin Arora</h5>
@@ -38,15 +38,6 @@ const Riding = () => {
                 
                               <div className="flex justify-between gap-2 flex-col items-center ">
                                 <div className="w-full mt-5">
-                                  <div className="flex gap-3 items-center p-2 border-b-2 border-gray-300">
-                                    <GrLocationPin size={25} />
-                                    <div>
-                                      <h3 className="text-lg font-medium">10/6</h3>
-                                      <p className="text-sm -mt-1 text-gray-600">
-                                        Tej Nagar Kamla Nagar
-                                      </p>
-                                    </div>
-                                  </div>
                                   <div className="flex gap-3 items-center p-2 border-b-2 border-gray-300">
                                     <RiUserLocationFill size={20} />
                                     <div>
@@ -65,7 +56,7 @@ const Riding = () => {
                                   </div>
                                 </div>
                               </div>
-                <button>Make a Payment</button>
+                <button className="w-full font-semibold mt-5 bg-green-400 rounded-lg p-2" >Make a Payment</button>
             </div>
       </div>
     )
