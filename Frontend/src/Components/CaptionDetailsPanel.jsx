@@ -3,7 +3,7 @@ import { FaRegStickyNote } from "react-icons/fa";
 import { MdOutlineSpeed } from "react-icons/md";
 import { FaBusinessTime } from "react-icons/fa";
 
-const CaptionDetailsPanel = () => {
+const CaptainDetailsPanel = () => {
     return(
         <div>
              <div className="flex items-center justify-between">
@@ -20,7 +20,7 @@ const CaptionDetailsPanel = () => {
                                     <p className="text-sm text-gray-600">Earned</p>
                                 </div>
                             </div>
-                            <div className="flex p-3 mt-6 rounded-2xl bg-gray-100 justify-center gap-7 items-center">
+                            <div className="flex p-3 mt-6 rounded-2xl bg-yellow-300 justify-center gap-7 items-center">
                                 <div className="text-center flex flex-col items-center">
                                     <FaBusinessTime size={30} className="mb-2 font-extrabold text-black" />
                                     <h5 className="text-lg font-medium">10.2</h5>
@@ -42,4 +42,4 @@ const CaptionDetailsPanel = () => {
 }
 
 
-export default CaptionDetailsPanel;
+export default CaptainDetailsPanel;
