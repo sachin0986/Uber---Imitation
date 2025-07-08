@@ -5,13 +5,12 @@ import { RiUserLocationFill } from "react-icons/ri";
 import { BsCashStack } from "react-icons/bs";
 import { Link } from "react-router-dom";
 
-const FinishRide = () => {
+const FinishRide = (props) => {
     return(
-          <div className="relative h-[90vh] flex flex-col justify-between">
-                 <h3 className="text-2xl font-semibold mb-5">Confirm this ride to Start</h3>
+          <div className="relative h-[70vh] flex flex-col justify-between">
+                 <h3 className="text-2xl font-semibold mb-5">Finish this ride</h3>
                  <button onClick={() => {
-                  props.setConfirmRidePopUpPanel(false);
-                  props.setRidePopUpPanel(true);
+                  props.setFinishRidePanel(false);
                  }} className="absolute right-4 top-1 text-black hover:text-black">
                    <RiArrowDownWideFill size={28} />
                  </button>
@@ -48,19 +47,12 @@ const FinishRide = () => {
                         </div>
                       </div>
                     </div>
-                      <div className="flex justify-evenly items-center w-full gap-3 mt-5 pb-5">
-                      <Link to="/captain-riding" className="flex items-center justify-center w-1/2 font-semibold bg-black text-white rounded-lg p-2 mr-1 hover:bg-gray-900 transition-colors">
-                        Go For PickUp
+                      <div className="flex mt-9 justify-evenly items-center w-full gap-3 pb-5">
+                      <Link to="/captain-home" className="flex items-center justify-center w-1/2 font-semibold bg-black text-white rounded-lg p-2 mr-1 hover:bg-gray-900 transition-colors">
+                        Finish Ride !
                       </Link>
-                      <button 
-                        onClick={() => {
-                          props.setConfirmRidePopUpPanel(false);
-                        }}
-                        className="w-1/2 font-semibold text-red-500 border-1 hover:text-white border-red-500 rounded-lg p-2 ml-1 hover:bg-red-500 transition-colors"
-                      >
-                        Cancle
-                      </button>
                       </div>
+                        <p className="text-red-500 -mt-4 text-center">click on Finish Ride button only if you recived the payment</p>
                     </div>
               </div>
     )

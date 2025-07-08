@@ -87,8 +87,8 @@ else{
             </div>
 
 
-                 <div ref={FinishRideRef} className="fixed h-screen w-full z-10 translate-y-full bg-white bottom-0 px-3 py-6">
-                    <FinishRide />
+                 <div ref={FinishRideRef} className="fixed h-[80%] w-full z-10 translate-y-full bg-white bottom-0 px-3 py-6">
+                    <FinishRide setFinishRidePanel={setFinishRidePanel}/>
                  </div>
         </div>
     )
