@@ -1,196 +1,284 @@
-# API Endpoint Documentation
+# 🚀 API Endpoint Documentation
+
+> **Modern Transportation API** - Complete endpoint reference with authentication, ride management, and mapping services.
 
 ---
 
-## /users/register
+## 📋 Table of Contents
 
-**POST** `/users/register`
+- [🔐 Authentication](#-authentication)
+  - [User Registration](#user-registration)
+  - [User Login](#user-login)
+  - [User Profile](#user-profile)
+  - [User Logout](#user-logout)
+- [👨‍✈️ Captain Management](#-captain-management)
+  - [Captain Registration](#captain-registration)
+  - [Captain Login](#captain-login)
+  - [Captain Profile](#captain-profile)
+  - [Captain Logout](#captain-logout)
+- [🗺️ Maps & Location](#️-maps--location)
+  - [Get Coordinates](#get-coordinates)
+  - [Get Distance & Time](#get-distance--time)
+  - [Get Suggestions](#get-suggestions)
+- [🚗 Ride Management](#-ride-management)
+  - [Create Ride](#create-ride)
+  - [Get Fare Estimate](#get-fare-estimate)
 
-Register a new user.
+---
 
-### Description
+## 🔐 Authentication
 
-Creates a new user account. Requires a unique email and a password. Returns a JWT token and user details on success.
+### User Registration
 
-### Request Body
+```http
+POST /users/register
+```
+
+**Description:** Creates a new user account with unique email and secure password.
+
+#### Request Body
 
 ```json
 {
   "fullname": {
-    "firstname": "Required. At least 3 characters.",
-    "lastname": "Optional. At least 3 characters if provided."
+    "firstname": "string",    // Required. Min 3 characters
+    "lastname": "string"      // Optional. Min 3 characters if provided
   },
-  "email": "Required. Valid email.",
-  "password": "Required. At least 6 characters."
+  "email": "string",          // Required. Valid email format
+  "password": "string"        // Required. Min 6 characters
 }
 ```
 
-### <span style="color:green">Success (201)</span>
+#### Responses
+
+<details>
+<summary><strong>✅ 201 Created</strong></summary>
 
 ```json
 {
-  "token": "JWT token here",
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
   "user": {
-    "fullname": { "firstname": "John", "lastname": "Doe" },
+    "fullname": {
+      "firstname": "John",
+      "lastname": "Doe"
+    },
     "email": "john.doe@example.com"
   }
 }
 ```
 
-### <span style="color:red">Validation Error (400)</span>
+</details>
+
+<details>
+<summary><strong>❌ 400 Bad Request</strong></summary>
 
 ```json
 {
   "errors": [
-    { "msg": "Please enter a valid email address", "param": "email", "location": "body" }
+    {
+      "msg": "Please enter a valid email address",
+      "param": "email",
+      "location": "body"
+    }
   ]
 }
 ```
 
+</details>
+
 ---
 
-## /users/login
+### User Login
 
-**POST** `/users/login`
+```http
+POST /users/login
+```
 
-Authenticate a user.
+**Description:** Authenticates user credentials and returns access token.
 
-### Description
-
-Logs in a user with email and password. Returns a JWT token and user details on success.
-
-### Request Body
+#### Request Body
 
 ```json
 {
-  "email": "Required. Valid email.",
-  "password": "Required. At least 6 characters."
+  "email": "string",          // Required. Valid email format
+  "password": "string"        // Required. Min 6 characters
 }
 ```
 
-### <span style="color:green">Success (200)</span>
+#### Responses
+
+<details>
+<summary><strong>✅ 200 OK</strong></summary>
 
 ```json
 {
-  "token": "JWT token here",
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
   "user": {
-    "fullname": { "firstname": "John", "lastname": "Doe" },
+    "fullname": {
+      "firstname": "John",
+      "lastname": "Doe"
+    },
     "email": "john.doe@example.com"
   }
 }
 ```
 
-### <span style="color:red">Unauthorized (401)</span>
+</details>
+
+<details>
+<summary><strong>❌ 401 Unauthorized</strong></summary>
 
 ```json
-{ "message": "Invalid email or password" }
+{
+  "message": "Invalid email or password"
+}
 ```
 
-### <span style="color:red">Validation Error (400)</span>
+</details>
+
+<details>
+<summary><strong>❌ 400 Bad Request</strong></summary>
 
 ```json
 {
   "errors": [
-    { "msg": "Invalid Email", "param": "email", "location": "body" },
-    { "msg": "Password must be at least 6 characters long", "param": "password", "location": "body" }
+    {
+      "msg": "Invalid Email",
+      "param": "email",
+      "location": "body"
+    },
+    {
+      "msg": "Password must be at least 6 characters long",
+      "param": "password",
+      "location": "body"
+    }
   ]
 }
 ```
 
+</details>
+
 ---
 
-## /users/profile
+### User Profile
 
-**GET** `/users/profile`
+```http
+GET /users/profile
+```
 
-Get authenticated user's profile.
+**Description:** Retrieves authenticated user's profile information.
 
-### Description
+**Authentication:** 🔒 Required (JWT token via cookie or header)
 
-Returns the profile of the currently authenticated user.
+#### Responses
 
-- **Authentication:** Required (JWT via cookie or header)
-
-### <span style="color:green">Success (200)</span>
+<details>
+<summary><strong>✅ 200 OK</strong></summary>
 
 ```json
 {
-  "_id": "user_id",
-  "fullname": { "firstname": "John", "lastname": "Doe" },
+  "_id": "507f1f77bcf86cd799439011",
+  "fullname": {
+    "firstname": "John",
+    "lastname": "Doe"
+  },
   "email": "john.doe@example.com"
 }
 ```
 
-### <span style="color:red">Unauthorized (401)</span>
+</details>
+
+<details>
+<summary><strong>❌ 401 Unauthorized</strong></summary>
 
 ```json
-{ "message": "Unauthorized" }
+{
+  "message": "Unauthorized"
+}
 ```
+
+</details>
 
 ---
 
-## /users/logout
+### User Logout
 
-**GET** `/users/logout`
-
-Logout the authenticated user.
-
-### Description
-
-Logs out the current user by blacklisting the JWT token.
-
-- **Authentication:** Required
-
-### <span style="color:green">Success (200)</span>
-
-```json
-{ "message": "User logged out successfully" }
+```http
+GET /users/logout
 ```
 
-### <span style="color:red">Unauthorized (401)</span>
+**Description:** Logs out user by blacklisting JWT token.
+
+**Authentication:** 🔒 Required
+
+#### Responses
+
+<details>
+<summary><strong>✅ 200 OK</strong></summary>
 
 ```json
-{ "message": "Unauthorized" }
+{
+  "message": "User logged out successfully"
+}
 ```
+
+</details>
+
+<details>
+<summary><strong>❌ 401 Unauthorized</strong></summary>
+
+```json
+{
+  "message": "Unauthorized"
+}
+```
+
+</details>
 
 ---
 
-## /captains/register
+## 👨‍✈️ Captain Management
 
-**POST** `/captains/register`
+### Captain Registration
 
-Register a new captain (driver).
+```http
+POST /captains/register
+```
 
-### Description
+**Description:** Creates a new captain (driver) account with vehicle details.
 
-Creates a new captain account with vehicle details. Returns a JWT token and captain details on success.
-
-### Request Body
+#### Request Body
 
 ```json
 {
   "fullname": {
-    "firstname": "Required. At least 3 characters.",
-    "lastname": "Optional. At least 3 characters if provided."
+    "firstname": "string",    // Required. Min 3 characters
+    "lastname": "string"      // Optional. Min 3 characters if provided
   },
-  "email": "Required. Valid email.",
-  "password": "Required. At least 6 characters.",
+  "email": "string",          // Required. Valid email format
+  "password": "string",       // Required. Min 6 characters
   "vehicle": {
-    "color": "Required. At least 3 characters.",
-    "plate": "Required. At least 3 characters.",
-    "capacity": "Required. Integer, at least 1.",
-    "vehicleType": "Required. One of: 'car', 'bike', 'auto'."
+    "color": "string",        // Required. Min 3 characters
+    "plate": "string",        // Required. Min 3 characters
+    "capacity": "number",     // Required. Integer, min 1
+    "vehicleType": "string"   // Required. One of: 'car', 'bike', 'auto'
   }
 }
 ```
 
-### <span style="color:green">Success (201)</span>
+#### Responses
+
+<details>
+<summary><strong>✅ 201 Created</strong></summary>
 
 ```json
 {
-  "token": "JWT token here",
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
   "captain": {
-    "fullname": { "firstname": "Alice", "lastname": "Smith" },
+    "fullname": {
+      "firstname": "Alice",
+      "lastname": "Smith"
+    },
     "email": "alice.smith@example.com",
     "vehicle": {
       "color": "Red",
@@ -202,45 +290,58 @@ Creates a new captain account with vehicle details. Returns a JWT token and capt
 }
 ```
 
-### <span style="color:red">Validation Error (400)</span>
+</details>
+
+<details>
+<summary><strong>❌ 400 Bad Request</strong></summary>
 
 ```json
 {
   "errors": [
-    { "msg": "Invalid email address", "param": "email", "location": "body" }
+    {
+      "msg": "Invalid email address",
+      "param": "email",
+      "location": "body"
+    }
   ]
 }
 ```
 
+</details>
+
 ---
 
-## /captains/login
+### Captain Login
 
-**POST** `/captains/login`
+```http
+POST /captains/login
+```
 
-Authenticate a captain.
+**Description:** Authenticates captain credentials and returns access token.
 
-### Description
-
-Logs in a captain with email and password. Returns a JWT token and captain details on success.
-
-### Request Body
+#### Request Body
 
 ```json
 {
-  "email": "Required. Valid email.",
-  "password": "Required. At least 6 characters."
+  "email": "string",          // Required. Valid email format
+  "password": "string"        // Required. Min 6 characters
 }
 ```
 
-### <span style="color:green">Success (200)</span>
+#### Responses
+
+<details>
+<summary><strong>✅ 200 OK</strong></summary>
 
 ```json
 {
-  "token": "JWT token here",
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
   "captain": {
-    "_id": "captain_id",
-    "fullname": { "firstname": "Alice", "lastname": "Smith" },
+    "_id": "507f1f77bcf86cd799439011",
+    "fullname": {
+      "firstname": "Alice",
+      "lastname": "Smith"
+    },
     "email": "captain@example.com",
     "vehicle": {
       "color": "Red",
@@ -252,44 +353,66 @@ Logs in a captain with email and password. Returns a JWT token and captain detai
 }
 ```
 
-### <span style="color:red">Unauthorized (401)</span>
+</details>
+
+<details>
+<summary><strong>❌ 401 Unauthorized</strong></summary>
 
 ```json
-{ "message": "Invalid email or password" }
+{
+  "message": "Invalid email or password"
+}
 ```
 
-### <span style="color:red">Validation Error (400)</span>
+</details>
+
+<details>
+<summary><strong>❌ 400 Bad Request</strong></summary>
 
 ```json
 {
   "errors": [
-    { "msg": "Invalid email address", "param": "email", "location": "body" },
-    { "msg": "Password must be at least 6 characters long", "param": "password", "location": "body" }
+    {
+      "msg": "Invalid email address",
+      "param": "email",
+      "location": "body"
+    },
+    {
+      "msg": "Password must be at least 6 characters long",
+      "param": "password",
+      "location": "body"
+    }
   ]
 }
 ```
 
+</details>
+
 ---
 
-## /captains/profile
+### Captain Profile
 
-**GET** `/captains/profile`
+```http
+GET /captains/profile
+```
 
-Get authenticated captain's profile.
+**Description:** Retrieves authenticated captain's profile and vehicle information.
 
-### Description
+**Authentication:** 🔒 Required (JWT token via cookie or header)
 
-Returns the profile of the currently authenticated captain.
+#### Responses
 
-- **Authentication:** Required (JWT via cookie or header)
-
-### <span style="color:green">Success (200)</span>
+<details>
+<summary><strong>✅ 200 OK</strong></summary>
 
 ```json
 {
   "captain": {
-    "_id": "captain_id",
-    "fullname": { "firstname": "Alice", "lastname": "Smith" },
+    "_id": "507f1f77bcf86cd799439011",
+    "fullname": {
+      "firstname": "Alice",
+      "lastname": "Smith"
+    },
     "email": "captain@example.com",
     "vehicle": {
       "color": "Red",
@@ -301,57 +424,79 @@ Returns the profile of the currently authenticated captain.
 }
 ```
 
-### <span style="color:red">Unauthorized (401)</span>
+</details>
+
+<details>
+<summary><strong>❌ 401 Unauthorized</strong></summary>
 
 ```json
-{ "message": "Invalid or expired authentication token" }
+{
+  "message": "Invalid or expired authentication token"
+}
 ```
+
+</details>
 
 ---
 
-## /captains/logout
+### Captain Logout
 
-**GET** `/captains/logout`
-
-Logout the authenticated captain.
-
-### Description
-
-Logs out the current captain by blacklisting the JWT token.
-
-- **Authentication:** Required
-
-### <span style="color:green">Success (200)</span>
-
-```json
-{ "message": "Logout successfully" }
+```http
+GET /captains/logout
 ```
 
-### <span style="color:red">Unauthorized (401)</span>
+**Description:** Logs out captain by blacklisting JWT token.
+
+**Authentication:** 🔒 Required
+
+#### Responses
+
+<details>
+<summary><strong>✅ 200 OK</strong></summary>
 
 ```json
-{ "message": "Invalid or expired authentication token" }
+{
+  "message": "Logout successfully"
+}
 ```
+
+</details>
+
+<details>
+<summary><strong>❌ 401 Unauthorized</strong></summary>
+
+```json
+{
+  "message": "Invalid or expired authentication token"
+}
+```
+
+</details>
 
 ---
 
-## /maps/get-coordinates
+## 🗺️ Maps & Location
 
-**GET** `/maps/get-coordinates?address=...`
+### Get Coordinates
 
-Get coordinates for a given address.
+```http
+GET /maps/get-coordinates?address={address}
+```
 
-### Description
+**Description:** Converts address string to latitude and longitude coordinates.
 
-Returns latitude and longitude for a given address string.
+**Authentication:** 🔒 Required
 
-- **Authentication:** Required
+#### Query Parameters
 
-### Query Parameters
+| Parameter | Type   | Required | Description                    |
+|-----------|--------|----------|--------------------------------|
+| address   | string | Yes      | The address to geocode         |
 
-- `address` (string, required): The address to geocode.
+#### Responses
 
-### <span style="color:green">Success (200)</span>
+<details>
+<summary><strong>✅ 200 OK</strong></summary>
 
 ```json
 {
@@ -360,165 +505,258 @@ Returns latitude and longitude for a given address string.
 }
 ```
 
-### <span style="color:red">Error (400/404)</span>
+</details>
 
-```json
-{ "errors": [ ... ] }
-```
-or
-```json
-{ "message": "Coordinates not found" }
-```
-
----
-
-## /maps/get-distanse-time
-
-**GET** `/maps/get-distanse-time?origin=...&destination=...`
-
-Get distance and time between two locations.
-
-### Description
-
-Returns distance and estimated travel time between two addresses.
-
-- **Authentication:** Required
-
-### Query Parameters
-
-- `origin` (string, required)
-- `destination` (string, required)
-
-### <span style="color:green">Success (200)</span>
+<details>
+<summary><strong>❌ 400 Bad Request</strong></summary>
 
 ```json
 {
-  "distance": { "text": "10 km", "value": 10000 },
-  "duration": { "text": "20 mins", "value": 1200 }
+  "errors": [
+    {
+      "msg": "Address is required",
+      "param": "address",
+      "location": "query"
+    }
+  ]
 }
 ```
 
-### <span style="color:red">Error (400/500)</span>
+</details>
+
+<details>
+<summary><strong>❌ 404 Not Found</strong></summary>
 
 ```json
-{ "errors": [ ... ] }
+{
+  "message": "Coordinates not found"
+}
 ```
-or
-```json
-{ "message": "Internal server error" }
-```
+
+</details>
 
 ---
 
-## /maps/get-suggestions
+### Get Distance & Time
 
-**GET** `/maps/get-suggestions?input=...`
+```http
+GET /maps/get-distanse-time?origin={origin}&destination={destination}
+```
 
-Get autocomplete suggestions for a location input.
+**Description:** Calculates distance and travel time between two locations.
 
-### Description
+**Authentication:** 🔒 Required
 
-Returns location suggestions for a partial address or place name.
+#### Query Parameters
 
-- **Authentication:** Required
+| Parameter   | Type   | Required | Description           |
+|-------------|--------|----------|-----------------------|
+| origin      | string | Yes      | Starting location     |
+| destination | string | Yes      | Destination location  |
 
-### Query Parameters
+#### Responses
 
-- `input` (string, required): The partial address or place name.
+<details>
+<summary><strong>✅ 200 OK</strong></summary>
 
-### <span style="color:green">Success (200)</span>
+```json
+{
+  "distance": {
+    "text": "10 km",
+    "value": 10000
+  },
+  "duration": {
+    "text": "20 mins",
+    "value": 1200
+  }
+}
+```
+
+</details>
+
+<details>
+<summary><strong>❌ 400 Bad Request</strong></summary>
+
+```json
+{
+  "errors": [
+    {
+      "msg": "Origin is required",
+      "param": "origin",
+      "location": "query"
+    }
+  ]
+}
+```
+
+</details>
+
+<details>
+<summary><strong>❌ 500 Internal Server Error</strong></summary>
+
+```json
+{
+  "message": "Internal server error"
+}
+```
+
+</details>
+
+---
+
+### Get Suggestions
+
+```http
+GET /maps/get-suggestions?input={input}
+```
+
+**Description:** Provides autocomplete suggestions for location input.
+
+**Authentication:** 🔒 Required
+
+#### Query Parameters
+
+| Parameter | Type   | Required | Description                          |
+|-----------|--------|----------|--------------------------------------|
+| input     | string | Yes      | Partial address or place name        |
+
+#### Responses
+
+<details>
+<summary><strong>✅ 200 OK</strong></summary>
 
 ```json
 [
   "Connaught Place, New Delhi, Delhi, India",
-  "New Delhi Railway Station, New Delhi, Delhi, India"
+  "New Delhi Railway Station, New Delhi, Delhi, India",
+  "New Delhi Airport, New Delhi, Delhi, India"
 ]
 ```
 
-### <span style="color:red">Error (400/500)</span>
+</details>
 
-```json
-{ "errors": [ ... ] }
-```
-or
-```json
-{ "message": "Internal server error" }
-```
-
----
-
-## /rides/create
-
-**POST** `/rides/create`
-
-Create a new ride.
-
-### Description
-
-Creates a new ride request for the authenticated user.
-
-- **Authentication:** Required
-
-### Request Body
+<details>
+<summary><strong>❌ 400 Bad Request</strong></summary>
 
 ```json
 {
-  "pickup": "Required. String, at least 3 characters.",
-  "destination": "Required. String, at least 3 characters.",
-  "vehicleType": "Required. One of: 'auto', 'car', 'bike'."
+  "errors": [
+    {
+      "msg": "Input is required",
+      "param": "input",
+      "location": "query"
+    }
+  ]
 }
 ```
 
-### <span style="color:green">Success (201)</span>
+</details>
+
+<details>
+<summary><strong>❌ 500 Internal Server Error</strong></summary>
 
 ```json
 {
-  "_id": "ride_id",
-  "user": "user_id",
-  "pickup": "Pickup Address",
-  "destination": "Destination Address",
+  "message": "Internal server error"
+}
+```
+
+</details>
+
+---
+
+## 🚗 Ride Management
+
+### Create Ride
+
+```http
+POST /rides/create
+```
+
+**Description:** Creates a new ride request for authenticated user.
+
+**Authentication:** 🔒 Required
+
+#### Request Body
+
+```json
+{
+  "pickup": "string",         // Required. Min 3 characters
+  "destination": "string",    // Required. Min 3 characters
+  "vehicleType": "string"     // Required. One of: 'auto', 'car', 'bike'
+}
+```
+
+#### Responses
+
+<details>
+<summary><strong>✅ 201 Created</strong></summary>
+
+```json
+{
+  "_id": "507f1f77bcf86cd799439011",
+  "user": "507f1f77bcf86cd799439012",
+  "pickup": "Connaught Place, New Delhi",
+  "destination": "India Gate, New Delhi",
   "fare": 193,
   "status": "pending",
   "otp": "1234"
 }
 ```
 
-### <span style="color:red">Validation Error (400)</span>
+</details>
+
+<details>
+<summary><strong>❌ 400 Bad Request</strong></summary>
 
 ```json
 {
   "errors": [
-    { "msg": "Invalid pickup address", "param": "pickup", "location": "body" }
+    {
+      "msg": "Invalid pickup address",
+      "param": "pickup",
+      "location": "body"
+    }
   ]
 }
 ```
 
-### <span style="color:red">Error (500)</span>
+</details>
+
+<details>
+<summary><strong>❌ 500 Internal Server Error</strong></summary>
 
 ```json
-{ "message": "Error message" }
+{
+  "message": "Unable to create ride. Please try again."
+}
 ```
+
+</details>
 
 ---
 
-## /rides/get-fare
+### Get Fare Estimate
 
-**GET** `/rides/get-fare?pickup=...&destination=...`
+```http
+GET /rides/get-fare?pickup={pickup}&destination={destination}
+```
 
-Get fare estimate for a ride.
+**Description:** Calculates fare estimates for different vehicle types.
 
-### Description
+**Authentication:** 🔒 Required
 
-Returns fare estimates for different vehicle types between two locations.
+#### Query Parameters
 
-- **Authentication:** Required
+| Parameter   | Type   | Required | Description           |
+|-------------|--------|----------|-----------------------|
+| pickup      | string | Yes      | Pickup location       |
+| destination | string | Yes      | Destination location  |
 
-### Query Parameters
+#### Responses
 
-- `pickup` (string, required)
-- `destination` (string, required)
-
-### <span style="color:green">Success (200)</span>
+<details>
+<summary><strong>✅ 200 OK</strong></summary>
 
 ```json
 {
@@ -528,26 +766,90 @@ Returns fare estimates for different vehicle types between two locations.
 }
 ```
 
-### <span style="color:red">Validation Error (400)</span>
+</details>
+
+<details>
+<summary><strong>❌ 400 Bad Request</strong></summary>
 
 ```json
 {
   "errors": [
-    { "msg": "Invalid Pickup Location", "param": "pickup", "location": "query" }
+    {
+      "msg": "Invalid Pickup Location",
+      "param": "pickup",
+      "location": "query"
+    }
   ]
 }
 ```
 
-### <span style="color:red">Error (500)</span>
+</details>
+
+<details>
+<summary><strong>❌ 500 Internal Server Error</strong></summary>
 
 ```json
-{ "message": "Error message" }
+{
+  "message": "Unable to calculate fare. Please try again."
+}
+```
+
+</details>
+
+---
+
+## 📝 Important Notes
+
+### Authentication
+- All protected endpoints require JWT token via cookie or `Authorization: Bearer <token>` header
+- Tokens are blacklisted upon logout for security
+
+### Error Handling
+- `400` status codes return validation errors in `errors` array format
+- `401` status codes indicate authentication issues
+- `500` status codes represent server-side errors
+
+### Data Formats
+- All timestamps are in ISO 8601 format
+- Coordinates are in decimal degrees (WGS84)
+- Distances are in meters, durations in seconds
+- Fares are in local currency units
+
+### Rate Limiting
+- API requests may be rate-limited per user/IP
+- Implement exponential backoff for failed requests
+
+---
+
+## 🔧 Development
+
+### Base URL
+```
+https://api.yourapp.com/v1
+```
+
+### Headers
+```http
+Content-Type: application/json
+Authorization: Bearer <your-jwt-token>
+```
+
+### Example cURL
+```bash
+curl -X POST "https://api.yourapp.com/v1/users/login" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "email": "user@example.com",
+    "password": "securepassword"
+  }'
 ```
 
 ---
 
-## Notes
+<div align="center">
 
-- All endpoints requiring authentication expect a JWT token via cookie or `Authorization: Bearer <token>` header.
-- Validation errors return a 400 status with an `errors` array.
-- All times and fares are examples; actual values depend on input and business logic.
+**Made with ❤️ for Modern Transportation**
+
+*Need help? Check our [support documentation](https://support.yourapp.com) or [contact our team](mailto:api@yourapp.com)*
+
+</div>
