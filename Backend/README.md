@@ -2,271 +2,195 @@
 
 ---
 
-## /users/register Endpoint Documentation
+## /users/register
+
+**POST** `/users/register`
+
+Register a new user.
 
 ### Description
-This endpoint allows new users to register by providing their email, password, and full name. The endpoint validates the input, hashes the password, creates a user, and returns an authentication token along with the created user details.
 
-### HTTP Request
-- **Method:** POST  
-- **URL:** `/users/register`
+Creates a new user account. Requires a unique email and a password. Returns a JWT token and user details on success.
 
 ### Request Body
 
 ```json
 {
   "fullname": {
-    "firstname": "Required. Must be at least 3 characters.",
-    "lastname": "Optional. Must be at least 3 characters if provided."
+    "firstname": "Required. At least 3 characters.",
+    "lastname": "Optional. At least 3 characters if provided."
   },
-  "email": "Required. A valid email address is necessary.",
-  "password": "Required. Must be at least 6 characters."
+  "email": "Required. Valid email.",
+  "password": "Required. At least 6 characters."
 }
 ```
 
-#### Example Request
-
-```json
-{
-  "fullname": {
-    "firstname": "John",
-    "lastname": "Doe"
-  },
-  "email": "john.doe@example.com",
-  "password": "password123"
-}
-```
-
-### Responses
-
-#### <span style="color:green">Success (HTTP 201)</span>
+### <span style="color:green">Success (201)</span>
 
 ```json
 {
   "token": "JWT token here",
   "user": {
-    "fullname": {
-      "firstname": "John",
-      "lastname": "Doe"
-    },
+    "fullname": { "firstname": "John", "lastname": "Doe" },
     "email": "john.doe@example.com"
   }
 }
 ```
 
-#### <span style="color:red">Validation Error (HTTP 400)</span>
+### <span style="color:red">Validation Error (400)</span>
 
 ```json
 {
   "errors": [
-    {
-      "msg": "Please enter a valid email address",
-      "param": "email",
-      "location": "body"
-    }
+    { "msg": "Please enter a valid email address", "param": "email", "location": "body" }
   ]
 }
 ```
 
 ---
 
-## /users/login Endpoint Documentation
+## /users/login
+
+**POST** `/users/login`
+
+Authenticate a user.
 
 ### Description
-The `/users/login` endpoint authenticates an existing user using their email and password. If the credentials are valid, the endpoint returns a JSON web token along with the user details.
 
-### HTTP Request
-- **Method:** POST  
-- **URL:** `/users/login`
+Logs in a user with email and password. Returns a JWT token and user details on success.
 
 ### Request Body
 
 ```json
 {
-  "email": "Required. A valid email address.",
-  "password": "Required. Must be at least 6 characters long."
+  "email": "Required. Valid email.",
+  "password": "Required. At least 6 characters."
 }
 ```
 
-#### Example Request
-
-```json
-{
-  "email": "john.doe@example.com",
-  "password": "password123"
-}
-```
-
-### Responses
-
-#### <span style="color:green">Success (HTTP 200)</span>
+### <span style="color:green">Success (200)</span>
 
 ```json
 {
   "token": "JWT token here",
   "user": {
-    "fullname": {
-      "firstname": "John",
-      "lastname": "Doe"
-    },
+    "fullname": { "firstname": "John", "lastname": "Doe" },
     "email": "john.doe@example.com"
   }
 }
 ```
 
-#### <span style="color:red">Unauthorized (HTTP 401)</span>
+### <span style="color:red">Unauthorized (401)</span>
 
 ```json
-{
-  "message": "Invalid email or password"
-}
+{ "message": "Invalid email or password" }
 ```
 
-#### <span style="color:red">Validation Error (HTTP 400)</span>
+### <span style="color:red">Validation Error (400)</span>
 
 ```json
 {
   "errors": [
-    {
-      "msg": "Invalid Email",
-      "param": "email",
-      "location": "body"
-    },
-    {
-      "msg": "Password must be at least 6 characters long",
-      "param": "password",
-      "location": "body"
-    }
+    { "msg": "Invalid Email", "param": "email", "location": "body" },
+    { "msg": "Password must be at least 6 characters long", "param": "password", "location": "body" }
   ]
 }
 ```
 
 ---
 
-## /users/profile Endpoint Documentation
+## /users/profile
+
+**GET** `/users/profile`
+
+Get authenticated user's profile.
 
 ### Description
-The `/users/profile` endpoint returns the profile data of the authenticated user.
 
-### HTTP Request
-- **Method:** GET  
-- **URL:** `/users/profile`
-- **Authentication:** Required. This endpoint requires a valid JWT token sent via cookie or authorization header.
+Returns the profile of the currently authenticated user.
 
-### Responses
+- **Authentication:** Required (JWT via cookie or header)
 
-#### <span style="color:green">Success (HTTP 200)</span>
+### <span style="color:green">Success (200)</span>
 
 ```json
 {
   "_id": "user_id",
-  "fullname": {
-    "firstname": "John",
-    "lastname": "Doe"
-  },
+  "fullname": { "firstname": "John", "lastname": "Doe" },
   "email": "john.doe@example.com"
 }
 ```
 
-#### <span style="color:red">Unauthorized (HTTP 401)</span>
+### <span style="color:red">Unauthorized (401)</span>
 
 ```json
-{
-  "message": "Unauthorized"
-}
+{ "message": "Unauthorized" }
 ```
 
 ---
 
-## /users/logout Endpoint Documentation
+## /users/logout
+
+**GET** `/users/logout`
+
+Logout the authenticated user.
 
 ### Description
-The `/users/logout` endpoint logs out the authenticated user by blacklisting the JWT token and clearing the authentication cookie.
 
-### HTTP Request
-- **Method:** GET  
-- **URL:** `/users/logout`
+Logs out the current user by blacklisting the JWT token.
+
 - **Authentication:** Required
 
-### Responses
-
-#### <span style="color:green">Success (HTTP 200)</span>
+### <span style="color:green">Success (200)</span>
 
 ```json
-{
-  "message": "User logged out successfully"
-}
+{ "message": "User logged out successfully" }
 ```
 
-#### <span style="color:red">Unauthorized (HTTP 401)</span>
+### <span style="color:red">Unauthorized (401)</span>
 
 ```json
-{
-  "message": "Unauthorized"
-}
+{ "message": "Unauthorized" }
 ```
 
 ---
 
-## /captains/register Endpoint Documentation
+## /captains/register
+
+**POST** `/captains/register`
+
+Register a new captain (driver).
 
 ### Description
-This endpoint allows new captains (drivers) to register by providing their personal and vehicle details. The endpoint validates the input, hashes the password, creates a captain, and returns an authentication token along with the created captain details.
 
-### HTTP Request
-- **Method:** POST  
-- **URL:** `/captains/register`
+Creates a new captain account with vehicle details. Returns a JWT token and captain details on success.
 
 ### Request Body
 
 ```json
 {
   "fullname": {
-    "firstname": "Required. Must be at least 3 characters.",
-    "lastname": "Optional. Must be at least 3 characters if provided."
+    "firstname": "Required. At least 3 characters.",
+    "lastname": "Optional. At least 3 characters if provided."
   },
-  "email": "Required. A valid email address.",
-  "password": "Required. Must be at least 6 characters.",
+  "email": "Required. Valid email.",
+  "password": "Required. At least 6 characters.",
   "vehicle": {
-    "color": "Required. Must be at least 3 characters.",
-    "plate": "Required. Must be at least 3 characters.",
+    "color": "Required. At least 3 characters.",
+    "plate": "Required. At least 3 characters.",
     "capacity": "Required. Integer, at least 1.",
     "vehicleType": "Required. One of: 'car', 'bike', 'auto'."
   }
 }
 ```
 
-#### Example Request
-
-```json
-{
-  "fullname": {
-    "firstname": "Alice",
-    "lastname": "Smith"
-  },
-  "email": "alice.smith@example.com",
-  "password": "securePass123",
-  "vehicle": {
-    "color": "Red",
-    "plate": "XYZ1234",
-    "capacity": 4,
-    "vehicleType": "car"
-  }
-}
-```
-
-### Responses
-
-#### <span style="color:green">Success (HTTP 201)</span>
+### <span style="color:green">Success (201)</span>
 
 ```json
 {
   "token": "JWT token here",
   "captain": {
-    "fullname": {
-      "firstname": "Alice",
-      "lastname": "Smith"
-    },
+    "fullname": { "firstname": "Alice", "lastname": "Smith" },
     "email": "alice.smith@example.com",
     "vehicle": {
       "color": "Red",
@@ -278,62 +202,45 @@ This endpoint allows new captains (drivers) to register by providing their perso
 }
 ```
 
-#### <span style="color:red">Validation Error (HTTP 400)</span>
+### <span style="color:red">Validation Error (400)</span>
 
 ```json
 {
   "errors": [
-    {
-      "msg": "Invalid email address",
-      "param": "email",
-      "location": "body"
-    }
+    { "msg": "Invalid email address", "param": "email", "location": "body" }
   ]
 }
 ```
 
 ---
 
-## /captains/login Endpoint Documentation
+## /captains/login
+
+**POST** `/captains/login`
+
+Authenticate a captain.
 
 ### Description
-The `/captains/login` endpoint authenticates a captain (driver) using their email and password. On successful authentication, it returns a JWT token and the captain's details.
 
-### HTTP Request
-- **Method:** POST  
-- **URL:** `/captains/login`
+Logs in a captain with email and password. Returns a JWT token and captain details on success.
 
 ### Request Body
 
 ```json
 {
-  "email": "Required. A valid email address.",
-  "password": "Required. Must be at least 6 characters long."
+  "email": "Required. Valid email.",
+  "password": "Required. At least 6 characters."
 }
 ```
 
-#### Example Request
-
-```json
-{
-  "email": "captain@example.com",
-  "password": "securePass123"
-}
-```
-
-### Responses
-
-#### <span style="color:green">Success (HTTP 200)</span>
+### <span style="color:green">Success (200)</span>
 
 ```json
 {
   "token": "JWT token here",
   "captain": {
     "_id": "captain_id",
-    "fullname": {
-      "firstname": "Alice",
-      "lastname": "Smith"
-    },
+    "fullname": { "firstname": "Alice", "lastname": "Smith" },
     "email": "captain@example.com",
     "vehicle": {
       "color": "Red",
@@ -345,57 +252,44 @@ The `/captains/login` endpoint authenticates a captain (driver) using their emai
 }
 ```
 
-#### <span style="color:red">Unauthorized (HTTP 401)</span>
+### <span style="color:red">Unauthorized (401)</span>
 
 ```json
-{
-  "message": "Invalid email or password"
-}
+{ "message": "Invalid email or password" }
 ```
 
-#### <span style="color:red">Validation Error (HTTP 400)</span>
+### <span style="color:red">Validation Error (400)</span>
 
 ```json
 {
   "errors": [
-    {
-      "msg": "Invalid email address",
-      "param": "email",
-      "location": "body"
-    },
-    {
-      "msg": "Password must be at least 6 characters long",
-      "param": "password",
-      "location": "body"
-    }
+    { "msg": "Invalid email address", "param": "email", "location": "body" },
+    { "msg": "Password must be at least 6 characters long", "param": "password", "location": "body" }
   ]
 }
 ```
 
 ---
 
-## /captains/profile Endpoint Documentation
+## /captains/profile
+
+**GET** `/captains/profile`
+
+Get authenticated captain's profile.
 
 ### Description
-The `/captains/profile` endpoint returns the profile data of the authenticated captain.
 
-### HTTP Request
-- **Method:** GET  
-- **URL:** `/captains/profile`
-- **Authentication:** Required. A valid JWT token must be provided via cookie or Authorization header.
+Returns the profile of the currently authenticated captain.
 
-### Responses
+- **Authentication:** Required (JWT via cookie or header)
 
-#### <span style="color:green">Success (HTTP 200)</span>
+### <span style="color:green">Success (200)</span>
 
 ```json
 {
   "captain": {
     "_id": "captain_id",
-    "fullname": {
-      "firstname": "Alice",
-      "lastname": "Smith"
-    },
+    "fullname": { "firstname": "Alice", "lastname": "Smith" },
     "email": "captain@example.com",
     "vehicle": {
       "color": "Red",
@@ -407,54 +301,253 @@ The `/captains/profile` endpoint returns the profile data of the authenticated c
 }
 ```
 
-#### <span style="color:red">Unauthorized (HTTP 401)</span>
+### <span style="color:red">Unauthorized (401)</span>
 
 ```json
-{
-  "message": "Invalid or expired authentication token"
-}
+{ "message": "Invalid or expired authentication token" }
 ```
 
 ---
 
-## /captains/logout Endpoint Documentation
+## /captains/logout
+
+**GET** `/captains/logout`
+
+Logout the authenticated captain.
 
 ### Description
-The `/captains/logout` endpoint logs out the authenticated captain by blacklisting the JWT token and clearing the authentication cookie.
 
-### HTTP Request
-- **Method:** GET  
-- **URL:** `/captains/logout`
+Logs out the current captain by blacklisting the JWT token.
+
 - **Authentication:** Required
 
-### Responses
-
-#### <span style="color:green">Success (HTTP 200)</span>
+### <span style="color:green">Success (200)</span>
 
 ```json
-{
-  "message": "Logout successfully"
-}
+{ "message": "Logout successfully" }
 ```
 
-#### <span style="color:red">Unauthorized (HTTP 401)</span>
+### <span style="color:red">Unauthorized (401)</span>
 
 ```json
-{
-  "message": "Invalid or expired authentication token"
-}
+{ "message": "Invalid or expired authentication token" }
 ```
 
 ---
 
-## Additional Notes
+## /maps/get-coordinates
 
-- **Authentication:** All endpoints except `/users/register`, `/users/login`, `/captains/register`, and `/captains/login` require a valid JWT token.
-- **Token Handling:** On login, the JWT token is set as a cookie. On logout, the token is blacklisted and the cookie is cleared.
-- **Validation:** All endpoints validate input and return detailed error messages for invalid requests.
+**GET** `/maps/get-coordinates?address=...`
+
+Get coordinates for a given address.
+
+### Description
+
+Returns latitude and longitude for a given address string.
+
+- **Authentication:** Required
+
+### Query Parameters
+
+- `address` (string, required): The address to geocode.
+
+### <span style="color:green">Success (200)</span>
+
+```json
+{
+  "ltd": 28.7041,
+  "lng": 77.1025
+}
+```
+
+### <span style="color:red">Error (400/404)</span>
+
+```json
+{ "errors": [ ... ] }
+```
+or
+```json
+{ "message": "Coordinates not found" }
+```
 
 ---
 
-> **Note:**  
-> The color styling (`green` for success, `red` for failure) is for documentation clarity.  
-> In Markdown viewers that do not support HTML/CSS, the color may not be visible.
+## /maps/get-distanse-time
+
+**GET** `/maps/get-distanse-time?origin=...&destination=...`
+
+Get distance and time between two locations.
+
+### Description
+
+Returns distance and estimated travel time between two addresses.
+
+- **Authentication:** Required
+
+### Query Parameters
+
+- `origin` (string, required)
+- `destination` (string, required)
+
+### <span style="color:green">Success (200)</span>
+
+```json
+{
+  "distance": { "text": "10 km", "value": 10000 },
+  "duration": { "text": "20 mins", "value": 1200 }
+}
+```
+
+### <span style="color:red">Error (400/500)</span>
+
+```json
+{ "errors": [ ... ] }
+```
+or
+```json
+{ "message": "Internal server error" }
+```
+
+---
+
+## /maps/get-suggestions
+
+**GET** `/maps/get-suggestions?input=...`
+
+Get autocomplete suggestions for a location input.
+
+### Description
+
+Returns location suggestions for a partial address or place name.
+
+- **Authentication:** Required
+
+### Query Parameters
+
+- `input` (string, required): The partial address or place name.
+
+### <span style="color:green">Success (200)</span>
+
+```json
+[
+  "Connaught Place, New Delhi, Delhi, India",
+  "New Delhi Railway Station, New Delhi, Delhi, India"
+]
+```
+
+### <span style="color:red">Error (400/500)</span>
+
+```json
+{ "errors": [ ... ] }
+```
+or
+```json
+{ "message": "Internal server error" }
+```
+
+---
+
+## /rides/create
+
+**POST** `/rides/create`
+
+Create a new ride.
+
+### Description
+
+Creates a new ride request for the authenticated user.
+
+- **Authentication:** Required
+
+### Request Body
+
+```json
+{
+  "pickup": "Required. String, at least 3 characters.",
+  "destination": "Required. String, at least 3 characters.",
+  "vehicleType": "Required. One of: 'auto', 'car', 'bike'."
+}
+```
+
+### <span style="color:green">Success (201)</span>
+
+```json
+{
+  "_id": "ride_id",
+  "user": "user_id",
+  "pickup": "Pickup Address",
+  "destination": "Destination Address",
+  "fare": 193,
+  "status": "pending",
+  "otp": "1234"
+}
+```
+
+### <span style="color:red">Validation Error (400)</span>
+
+```json
+{
+  "errors": [
+    { "msg": "Invalid pickup address", "param": "pickup", "location": "body" }
+  ]
+}
+```
+
+### <span style="color:red">Error (500)</span>
+
+```json
+{ "message": "Error message" }
+```
+
+---
+
+## /rides/get-fare
+
+**GET** `/rides/get-fare?pickup=...&destination=...`
+
+Get fare estimate for a ride.
+
+### Description
+
+Returns fare estimates for different vehicle types between two locations.
+
+- **Authentication:** Required
+
+### Query Parameters
+
+- `pickup` (string, required)
+- `destination` (string, required)
+
+### <span style="color:green">Success (200)</span>
+
+```json
+{
+  "auto": 120,
+  "car": 193,
+  "bike": 65
+}
+```
+
+### <span style="color:red">Validation Error (400)</span>
+
+```json
+{
+  "errors": [
+    { "msg": "Invalid Pickup Location", "param": "pickup", "location": "query" }
+  ]
+}
+```
+
+### <span style="color:red">Error (500)</span>
+
+```json
+{ "message": "Error message" }
+```
+
+---
+
+## Notes
+
+- All endpoints requiring authentication expect a JWT token via cookie or `Authorization: Bearer <token>` header.
+- Validation errors return a 400 status with an `errors` array.
+- All times and fares are examples; actual values depend on input and business logic.
