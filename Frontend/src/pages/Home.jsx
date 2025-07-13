@@ -1,5 +1,5 @@
 // Home.jsx
-import { useState, useRef } from "react";
+import { useState, useRef, use } from "react";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { RiArrowDownWideFill } from "react-icons/ri";
@@ -29,6 +29,8 @@ const Home = () => {
   const [pickupSuggestions, setPickupSuggestions] = useState([]);
   const [destinationSuggestions, setDestinationSuggestions] = useState([]);
   const [activeField, setActiveField] = useState(null);
+  const [fare, setFare] = useState({});
+  const [vehicleType, setvehicleType] = useState(null);
 
   const panelRef = useRef(null);
   const panelCloseRef = useRef(null);
@@ -94,6 +96,44 @@ const Home = () => {
       setDestinationSuggestions([]);
     }
   };
+
+  async function handleFare() {
+    setPanelOpen(false);
+    setVehiclePanelOpen(true);
+
+    const response = await axios.get(`${VITE_BASE_URL}rides/get-fare`, {
+      params: { pickup, destination },
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    });
+    setFare(response.data);
+    console.log(response.data);
+  }
+
+ async function createRide() {
+  if (!pickup || !destination || !vehicleType) {
+    alert("Please select pickup, destination, and vehicle type.");
+    return;
+  }
+  try {
+    const response = await axios.post(
+      `${VITE_BASE_URL}rides/create`,
+      {
+        pickup,
+        destination,
+        vehicleType,
+      },
+      {
+        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+      }
+    );
+    console.log(response.data);
+  } catch (error) {
+    console.error("Error creating ride:", error.response?.data || error.message);
+    alert(error.response?.data?.message || "Failed to create ride");
+  }
+}
 
   const submitHandler = (e) => {
     e.preventDefault();
@@ -238,15 +278,14 @@ const Home = () => {
                   onChange={handleDestinationChange}
                 />
               </div>
-              {/* Removed the Find Trip button from here, as vehicle panel opens on destination selection */}
-              {/* {panelOpen && (
+              {panelOpen && (
                 <button
-                  onClick={handelPanel}
+                  onClick={() => handleFare()}
                   className="flex font-medium bg-black text-white justify-center w-full p-2 mt-3 rounded-xl"
                 >
                   Find Trip
                 </button>
-              )} */}
+              )}
             </form>
           </div>
 
@@ -266,6 +305,7 @@ const Home = () => {
               setDestination={setDestination}
               activeField={activeField}
               setActiveField={setActiveField}
+              handleFare={handleFare}
             />
           </div>
         </div>
@@ -276,9 +316,12 @@ const Home = () => {
         className="fixed w-full z-10 bg-white translate-y-full bottom-0 px-3 py-6"
       >
         <VehiclePanel
-          setPanelOpen={setPanelOpen}
-          setConfirmRidePanel={setConfirmRidePanel}
-          setVehiclePanelOpen={setVehiclePanelOpen}
+         setPanelOpen={setPanelOpen}
+  setConfirmRidePanel={setConfirmRidePanel}
+  setVehiclePanelOpen={setVehiclePanelOpen}
+  fare={fare}
+  createRide={createRide}
+  setvehicleType={setvehicleType}
         />
       </div>
 
@@ -297,9 +340,14 @@ const Home = () => {
             <RiArrowDownWideFill size={20} />
           </h5>
           <ConfirmRide
-            setVehiclePanelOpen={setVehiclePanelOpen}
-            setConfirmRidePanel={setConfirmRidePanel}
-            setVehicleFound={setVehicleFound}
+            createRide={createRide}
+  setVehiclePanelOpen={setVehiclePanelOpen}
+  setConfirmRidePanel={setConfirmRidePanel}
+  setVehicleFound={setVehicleFound}
+  vehicleType={vehicleType}
+  pickup={pickup}
+  destination={destination}
+  fare={fare}
           />
         </div>
       </div>
@@ -320,7 +368,13 @@ const Home = () => {
               Cancel Ride
             </span>
           </h5>
-          <LookingForDriver />
+          <LookingForDriver 
+           pickup={pickup}
+  destination={destination}
+  fare={fare}
+  vehicleType={vehicleType}
+    setvehicleType={setvehicleType}
+          />
         </div>
       </div>
 

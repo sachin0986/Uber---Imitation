@@ -19,21 +19,19 @@ const ConfirmRide = (props) => {
           <div className="flex gap-3 items-center p-2 border-b-2 border-gray-300">
             <GrLocationPin size={25}/>
                 <div>
-                    <h3 className="text-lg font-medium">10/6</h3>
-                    <p className="text-sm -mt-1 text-gray-600">Tej Nagar Kamla Nagar</p>
+                    <p className="text-sm -mt-1 text-gray-600">{props.pickup}</p>
                 </div>
           </div>
           <div className="flex gap-3 items-center p-2 border-b-2 border-gray-300">
-            <RiUserLocationFill size={20}/>
+            <RiUserLocationFill size={22}/>
                 <div>
-                    <h3 className="text-lg font-medium">10/6</h3>
-                    <p className="text-sm -mt-1 text-gray-600">Tej Nagar Kamla Nagar</p>
+                    <p className="text-sm -mt-1 text-gray-600">{props.destination}</p>
                 </div>
           </div>
           <div className="flex gap-3 items-center p-2 border-b-1 border-gray-500">
             <BsCashStack size={20}/>
                 <div>
-                    <h3 className="text-lg font-medium">₹ 193.20</h3>
+                    <h3 className="text-lg font-medium">₹{props.fare[ props.vehicleType ]}</h3>
                     <p className="text-sm -mt-1 text-gray-600">Cash</p>
                 </div>
           </div>
@@ -42,6 +40,7 @@ const ConfirmRide = (props) => {
         onClick={() => {
           props.setVehicleFound(true);
           props.setConfirmRidePanel(false)
+          props.createRide();
         }}
         className="w-full font-semibold mt-5 bg-green-400 rounded-lg p-2">Confirm</button>
       </div>
