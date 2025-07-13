@@ -39,7 +39,7 @@ This endpoint allows new users to register by providing their email, password, a
 
 ### Responses
 
-#### Success (HTTP 201)
+#### <span style="color:green">Success (HTTP 201)</span>
 
 ```json
 {
@@ -54,7 +54,7 @@ This endpoint allows new users to register by providing their email, password, a
 }
 ```
 
-#### Validation Error (HTTP 400)
+#### <span style="color:red">Validation Error (HTTP 400)</span>
 
 ```json
 {
@@ -67,11 +67,6 @@ This endpoint allows new users to register by providing their email, password, a
   ]
 }
 ```
-
-### Additional Notes
-- **Password Security:** The provided password is securely hashed before being stored.
-- **Token Generation:** An authentication token is generated using JWT.
-- **Required Fields:** `fullname.firstname`, `email`, and `password` are mandatory. The `fullname.lastname` field is optional.
 
 ---
 
@@ -104,7 +99,7 @@ The `/users/login` endpoint authenticates an existing user using their email and
 
 ### Responses
 
-#### Success (HTTP 200)
+#### <span style="color:green">Success (HTTP 200)</span>
 
 ```json
 {
@@ -119,7 +114,7 @@ The `/users/login` endpoint authenticates an existing user using their email and
 }
 ```
 
-#### Unauthorized (HTTP 401)
+#### <span style="color:red">Unauthorized (HTTP 401)</span>
 
 ```json
 {
@@ -127,7 +122,7 @@ The `/users/login` endpoint authenticates an existing user using their email and
 }
 ```
 
-#### Validation Error (HTTP 400)
+#### <span style="color:red">Validation Error (HTTP 400)</span>
 
 ```json
 {
@@ -146,11 +141,6 @@ The `/users/login` endpoint authenticates an existing user using their email and
 }
 ```
 
-### Additional Notes
-- **Token Generation:** A JSON web token (JWT) is generated upon successful authentication.
-- **Password Verification:** The user's provided password is compared against the stored hash using bcrypt.
-- **Cookie Handling:** On successful login, the token is also set as an HTTP cookie.
-
 ---
 
 ## /users/profile Endpoint Documentation
@@ -165,7 +155,7 @@ The `/users/profile` endpoint returns the profile data of the authenticated user
 
 ### Responses
 
-#### Success (HTTP 200)
+#### <span style="color:green">Success (HTTP 200)</span>
 
 ```json
 {
@@ -178,16 +168,13 @@ The `/users/profile` endpoint returns the profile data of the authenticated user
 }
 ```
 
-#### Unauthorized (HTTP 401)
+#### <span style="color:red">Unauthorized (HTTP 401)</span>
 
 ```json
 {
   "message": "Unauthorized"
 }
 ```
-
-### Additional Notes
-- **Authentication:** JWT token must be provided in the cookie or Authorization header.
 
 ---
 
@@ -203,7 +190,7 @@ The `/users/logout` endpoint logs out the authenticated user by blacklisting the
 
 ### Responses
 
-#### Success (HTTP 200)
+#### <span style="color:green">Success (HTTP 200)</span>
 
 ```json
 {
@@ -211,7 +198,7 @@ The `/users/logout` endpoint logs out the authenticated user by blacklisting the
 }
 ```
 
-#### Unauthorized (HTTP 401)
+#### <span style="color:red">Unauthorized (HTTP 401)</span>
 
 ```json
 {
@@ -270,7 +257,7 @@ This endpoint allows new captains (drivers) to register by providing their perso
 
 ### Responses
 
-#### Success (HTTP 201)
+#### <span style="color:green">Success (HTTP 201)</span>
 
 ```json
 {
@@ -291,7 +278,7 @@ This endpoint allows new captains (drivers) to register by providing their perso
 }
 ```
 
-#### Validation Error (HTTP 400)
+#### <span style="color:red">Validation Error (HTTP 400)</span>
 
 ```json
 {
@@ -336,7 +323,7 @@ The `/captains/login` endpoint authenticates a captain (driver) using their emai
 
 ### Responses
 
-#### Success (HTTP 200)
+#### <span style="color:green">Success (HTTP 200)</span>
 
 ```json
 {
@@ -358,7 +345,7 @@ The `/captains/login` endpoint authenticates a captain (driver) using their emai
 }
 ```
 
-#### Unauthorized (HTTP 401)
+#### <span style="color:red">Unauthorized (HTTP 401)</span>
 
 ```json
 {
@@ -366,7 +353,7 @@ The `/captains/login` endpoint authenticates a captain (driver) using their emai
 }
 ```
 
-#### Validation Error (HTTP 400)
+#### <span style="color:red">Validation Error (HTTP 400)</span>
 
 ```json
 {
@@ -399,7 +386,7 @@ The `/captains/profile` endpoint returns the profile data of the authenticated c
 
 ### Responses
 
-#### Success (HTTP 200)
+#### <span style="color:green">Success (HTTP 200)</span>
 
 ```json
 {
@@ -420,7 +407,7 @@ The `/captains/profile` endpoint returns the profile data of the authenticated c
 }
 ```
 
-#### Unauthorized (HTTP 401)
+#### <span style="color:red">Unauthorized (HTTP 401)</span>
 
 ```json
 {
@@ -442,7 +429,7 @@ The `/captains/logout` endpoint logs out the authenticated captain by blacklisti
 
 ### Responses
 
-#### Success (HTTP 200)
+#### <span style="color:green">Success (HTTP 200)</span>
 
 ```json
 {
@@ -450,7 +437,7 @@ The `/captains/logout` endpoint logs out the authenticated captain by blacklisti
 }
 ```
 
-#### Unauthorized (HTTP 401)
+#### <span style="color:red">Unauthorized (HTTP 401)</span>
 
 ```json
 {
@@ -464,4 +451,10 @@ The `/captains/logout` endpoint logs out the authenticated captain by blacklisti
 
 - **Authentication:** All endpoints except `/users/register`, `/users/login`, `/captains/register`, and `/captains/login` require a valid JWT token.
 - **Token Handling:** On login, the JWT token is set as a cookie. On logout, the token is blacklisted and the cookie is cleared.
-- **Validation:** All endpoints validate input and return detailed error messages
+- **Validation:** All endpoints validate input and return detailed error messages for invalid requests.
+
+---
+
+> **Note:**  
+> The color styling (`green` for success, `red` for failure) is for documentation clarity.  
+> In Markdown viewers that do not support HTML/CSS, the color may not be visible.
