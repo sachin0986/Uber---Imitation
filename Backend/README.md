@@ -1,14 +1,17 @@
-# /users/register Endpoint Documentation
+# API Endpoint Documentation
 
-## Description
+---
+
+## /users/register Endpoint Documentation
+
+### Description
 This endpoint allows new users to register by providing their email, password, and full name. The endpoint validates the input, hashes the password, creates a user, and returns an authentication token along with the created user details.
 
-## HTTP Request
+### HTTP Request
 - **Method:** POST  
 - **URL:** `/users/register`
 
-## Request Body
-The endpoint expects a JSON payload with the following structure:
+### Request Body
 
 ```json
 {
@@ -21,7 +24,8 @@ The endpoint expects a JSON payload with the following structure:
 }
 ```
 
-### Example Request
+#### Example Request
+
 ```json
 {
   "fullname": {
@@ -33,10 +37,9 @@ The endpoint expects a JSON payload with the following structure:
 }
 ```
 
-## Responses
+### Responses
 
-### Success (HTTP 201)
-On successful registration, the response will include a JSON object containing the authentication token and the user data.
+#### Success (HTTP 201)
 
 ```json
 {
@@ -47,13 +50,11 @@ On successful registration, the response will include a JSON object containing t
       "lastname": "Doe"
     },
     "email": "john.doe@example.com"
-    // Other user details may be included
   }
 }
 ```
 
-### Validation Error (HTTP 400)
-If the input validation fails, the endpoint returns a 400 status code with details about the validation errors.
+#### Validation Error (HTTP 400)
 
 ```json
 {
@@ -63,29 +64,27 @@ If the input validation fails, the endpoint returns a 400 status code with detai
       "param": "email",
       "location": "body"
     }
-    // Additional error objects if applicable
   ]
 }
 ```
 
-## Additional Notes
+### Additional Notes
 - **Password Security:** The provided password is securely hashed before being stored.
 - **Token Generation:** An authentication token is generated using JWT.
 - **Required Fields:** `fullname.firstname`, `email`, and `password` are mandatory. The `fullname.lastname` field is optional.
 
-# /users/login Endpoint Documentation
+---
 
-## Description
+## /users/login Endpoint Documentation
+
+### Description
 The `/users/login` endpoint authenticates an existing user using their email and password. If the credentials are valid, the endpoint returns a JSON web token along with the user details.
 
-## Endpoint Details
-
+### HTTP Request
 - **Method:** POST  
 - **URL:** `/users/login`
 
-## Request Body
-
-The endpoint expects a JSON payload with the following structure:
+### Request Body
 
 ```json
 {
@@ -94,7 +93,7 @@ The endpoint expects a JSON payload with the following structure:
 }
 ```
 
-### Example Request
+#### Example Request
 
 ```json
 {
@@ -103,10 +102,9 @@ The endpoint expects a JSON payload with the following structure:
 }
 ```
 
-## Responses
+### Responses
 
-### Success (HTTP 200)
-On successful authentication, the response contains a JSON object with the authentication token and user details.
+#### Success (HTTP 200)
 
 ```json
 {
@@ -117,15 +115,11 @@ On successful authentication, the response contains a JSON object with the authe
       "lastname": "Doe"
     },
     "email": "john.doe@example.com"
-    // Additional user details if applicable
   }
 }
 ```
 
-### Error Responses
-
 #### Unauthorized (HTTP 401)
-If the credentials are invalid, the endpoint returns a 401 status code with an error message.
 
 ```json
 {
@@ -134,7 +128,6 @@ If the credentials are invalid, the endpoint returns a 401 status code with an e
 ```
 
 #### Validation Error (HTTP 400)
-If the input validation fails (e.g., invalid email format or password too short), a 400 status code is returned with details about the validation errors.
 
 ```json
 {
@@ -153,26 +146,26 @@ If the input validation fails (e.g., invalid email format or password too short)
 }
 ```
 
-## Additional Notes
+### Additional Notes
 - **Token Generation:** A JSON web token (JWT) is generated upon successful authentication.
 - **Password Verification:** The user's provided password is compared against the stored hash using bcrypt.
 - **Cookie Handling:** On successful login, the token is also set as an HTTP cookie.
 
-# /users/profile Endpoint Documentation
+---
 
-## Description
+## /users/profile Endpoint Documentation
+
+### Description
 The `/users/profile` endpoint returns the profile data of the authenticated user.
 
-## Endpoint Details
-
+### HTTP Request
 - **Method:** GET  
 - **URL:** `/users/profile`
 - **Authentication:** Required. This endpoint requires a valid JWT token sent via cookie or authorization header.
 
-## Responses
+### Responses
 
-### Success (HTTP 200)
-On successful authentication, the endpoint returns the user's profile data as JSON.
+#### Success (HTTP 200)
 
 ```json
 {
@@ -181,13 +174,11 @@ On successful authentication, the endpoint returns the user's profile data as JS
     "firstname": "John",
     "lastname": "Doe"
   },
-  "email": "john.doe@example.com",
-  // Any additional user details
+  "email": "john.doe@example.com"
 }
 ```
 
-### Error (HTTP 401)
-If the user is not authenticated or the token is invalid, a 401 Unauthorized error is returned.
+#### Unauthorized (HTTP 401)
 
 ```json
 {
@@ -195,21 +186,24 @@ If the user is not authenticated or the token is invalid, a 401 Unauthorized err
 }
 ```
 
-# /users/logout Endpoint Documentation
+### Additional Notes
+- **Authentication:** JWT token must be provided in the cookie or Authorization header.
 
-## Description
-The `/users/logout` endpoint logs out the authenticated user by clearing the authentication cookie. Optionally, the JWT token may be added to a blacklist to invalidate it.
+---
 
-## Endpoint Details
+## /users/logout Endpoint Documentation
 
+### Description
+The `/users/logout` endpoint logs out the authenticated user by blacklisting the JWT token and clearing the authentication cookie.
+
+### HTTP Request
 - **Method:** GET  
 - **URL:** `/users/logout`
-- **Authentication:** Required.
+- **Authentication:** Required
 
-## Responses
+### Responses
 
-### Success (HTTP 200)
-On successful logout, the endpoint returns a confirmation message.
+#### Success (HTTP 200)
 
 ```json
 {
@@ -217,8 +211,7 @@ On successful logout, the endpoint returns a confirmation message.
 }
 ```
 
-### Error (HTTP 401)
-If the user is not authenticated, a 401 Unauthorized error is returned.
+#### Unauthorized (HTTP 401)
 
 ```json
 {
@@ -226,20 +219,18 @@ If the user is not authenticated, a 401 Unauthorized error is returned.
 }
 ```
 
+---
 
-# /captains/register Endpoint Documentation
+## /captains/register Endpoint Documentation
 
-## Description
-The `/captains/register` endpoint allows new captains (drivers) to register by providing their personal details, email, password, and vehicle information. The endpoint validates the input, creates a new captain record, and returns the created captain's data.
+### Description
+This endpoint allows new captains (drivers) to register by providing their personal and vehicle details. The endpoint validates the input, hashes the password, creates a captain, and returns an authentication token along with the created captain details.
 
-## Endpoint Details
-
+### HTTP Request
 - **Method:** POST  
 - **URL:** `/captains/register`
 
-## Request Body
-
-The endpoint expects a JSON payload with the following structure:
+### Request Body
 
 ```json
 {
@@ -248,17 +239,17 @@ The endpoint expects a JSON payload with the following structure:
     "lastname": "Optional. Must be at least 3 characters if provided."
   },
   "email": "Required. A valid email address.",
-  "password": "Required. Must be at least 6 characters long.",
+  "password": "Required. Must be at least 6 characters.",
   "vehicle": {
     "color": "Required. Must be at least 3 characters.",
     "plate": "Required. Must be at least 3 characters.",
     "capacity": "Required. Integer, at least 1.",
-    "vehicleType": "Required. Must be one of: 'car', 'bike', 'auto'."
+    "vehicleType": "Required. One of: 'car', 'bike', 'auto'."
   }
 }
 ```
 
-### Example Request
+#### Example Request
 
 ```json
 {
@@ -277,13 +268,13 @@ The endpoint expects a JSON payload with the following structure:
 }
 ```
 
-## Responses
+### Responses
 
-### Success (HTTP 201)
-On successful registration, the response will include the created captain's data.
+#### Success (HTTP 201)
 
 ```json
 {
+  "token": "JWT token here",
   "captain": {
     "fullname": {
       "firstname": "Alice",
@@ -296,13 +287,11 @@ On successful registration, the response will include the created captain's data
       "capacity": 4,
       "vehicleType": "car"
     }
-    // Additional captain details if applicable
   }
 }
 ```
 
-### Validation Error (HTTP 400)
-If the input validation fails, the endpoint returns a 400 status code with details about the validation errors.
+#### Validation Error (HTTP 400)
 
 ```json
 {
@@ -312,27 +301,22 @@ If the input validation fails, the endpoint returns a 400 status code with detai
       "param": "email",
       "location": "body"
     }
-    // Additional error objects if applicable
   ]
 }
 ```
 
-## Additional Notes
-- **Input Validation:** All required fields must be provided and meet the specified criteria.
-- **Vehicle Type:** Only 'car', 'bike', or 'auto' are accepted as valid vehicle types.
-- **Password Security:** The password should be securely handled
+---
 
-# /captains/login Endpoint Documentation
+## /captains/login Endpoint Documentation
 
-## Description
+### Description
 The `/captains/login` endpoint authenticates a captain (driver) using their email and password. On successful authentication, it returns a JWT token and the captain's details.
 
-## Endpoint Details
-
+### HTTP Request
 - **Method:** POST  
 - **URL:** `/captains/login`
 
-## Request Body
+### Request Body
 
 ```json
 {
@@ -341,7 +325,7 @@ The `/captains/login` endpoint authenticates a captain (driver) using their emai
 }
 ```
 
-### Example Request
+#### Example Request
 
 ```json
 {
@@ -350,9 +334,9 @@ The `/captains/login` endpoint authenticates a captain (driver) using their emai
 }
 ```
 
-## Responses
+### Responses
 
-### Success (HTTP 200)
+#### Success (HTTP 200)
 
 ```json
 {
@@ -370,12 +354,9 @@ The `/captains/login` endpoint authenticates a captain (driver) using their emai
       "capacity": 4,
       "vehicleType": "car"
     }
-    // Additional captain details if applicable
   }
 }
 ```
-
-### Error Responses
 
 #### Unauthorized (HTTP 401)
 
@@ -406,20 +387,19 @@ The `/captains/login` endpoint authenticates a captain (driver) using their emai
 
 ---
 
-# /captains/profile Endpoint Documentation
+## /captains/profile Endpoint Documentation
 
-## Description
+### Description
 The `/captains/profile` endpoint returns the profile data of the authenticated captain.
 
-## Endpoint Details
-
+### HTTP Request
 - **Method:** GET  
 - **URL:** `/captains/profile`
 - **Authentication:** Required. A valid JWT token must be provided via cookie or Authorization header.
 
-## Responses
+### Responses
 
-### Success (HTTP 200)
+#### Success (HTTP 200)
 
 ```json
 {
@@ -436,12 +416,11 @@ The `/captains/profile` endpoint returns the profile data of the authenticated c
       "capacity": 4,
       "vehicleType": "car"
     }
-    // Additional captain details if applicable
   }
 }
 ```
 
-### Error (HTTP 401)
+#### Unauthorized (HTTP 401)
 
 ```json
 {
@@ -451,20 +430,19 @@ The `/captains/profile` endpoint returns the profile data of the authenticated c
 
 ---
 
-# /captains/logout Endpoint Documentation
+## /captains/logout Endpoint Documentation
 
-## Description
+### Description
 The `/captains/logout` endpoint logs out the authenticated captain by blacklisting the JWT token and clearing the authentication cookie.
 
-## Endpoint Details
-
+### HTTP Request
 - **Method:** GET  
 - **URL:** `/captains/logout`
-- **Authentication:** Required.
+- **Authentication:** Required
 
-## Responses
+### Responses
 
-### Success (HTTP 200)
+#### Success (HTTP 200)
 
 ```json
 {
@@ -472,7 +450,7 @@ The `/captains/logout` endpoint logs out the authenticated captain by blacklisti
 }
 ```
 
-### Error (HTTP 401)
+#### Unauthorized (HTTP 401)
 
 ```json
 {
@@ -484,5 +462,6 @@ The `/captains/logout` endpoint logs out the authenticated captain by blacklisti
 
 ## Additional Notes
 
-- **Authentication:** All endpoints except `/captains/login` require a valid JWT token.
-- **Token Handling:** On login, the JWT token is set as a cookie. On logout, the token is blacklisted and the cookie
+- **Authentication:** All endpoints except `/users/register`, `/users/login`, `/captains/register`, and `/captains/login` require a valid JWT token.
+- **Token Handling:** On login, the JWT token is set as a cookie. On logout, the token is blacklisted and the cookie is cleared.
+- **Validation:** All endpoints validate input and return detailed error messages
