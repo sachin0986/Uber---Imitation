@@ -20,7 +20,7 @@ const RidePopUp = (props) => {
             <img className="h-12 w-12 object-cover rounded-full " 
             src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRdlMd7stpWUCmjpfRjUsQ72xSWikidbgaI1w&s" 
             alt="captain-image" />
-            <h3 className="text-lg font-medium">Harsh Patel</h3>
+            <h3 className="text-lg font-medium">{props.ride?.user.fullname.firstname + " " + props.ride?.user.fullname.lastname}</h3>
           </div>
           <h5 className="text-lg font-semibold">2.2 KM</h5>
          </div>
@@ -29,21 +29,19 @@ const RidePopUp = (props) => {
               <div className="flex gap-3 items-center p-2 border-b-2 border-gray-300">
               <GrLocationPin size={25}/>
                 <div>
-                  <h3 className="text-lg font-medium">10/6</h3>
-                  <p className="text-sm -mt-1 text-gray-600">Tej Nagar Kamla Nagar</p>
+                  <p className="text-sm -mt-1 text-gray-600">{props.ride?.pickup}</p>
                 </div>
               </div>
               <div className="flex gap-3 items-center p-2 border-b-2 border-gray-300">
               <RiUserLocationFill size={20}/>
                 <div>
-                  <h3 className="text-lg font-medium">10/6</h3>
-                  <p className="text-sm -mt-1 text-gray-600">Tej Nagar Kamla Nagar</p>
+                  <p className="text-sm -mt-1 text-gray-600">{props.ride?.destination}</p>
                 </div>
               </div>
               <div className="flex gap-3 items-center p-2 border-b-1 border-gray-500">
               <BsCashStack size={20}/>
                 <div>
-                  <h3 className="text-lg font-medium">₹ 193.20</h3>
+                  <h3 className="text-lg font-medium">₹{props.ride?.fare}</h3>
                   <p className="text-sm -mt-1 text-gray-600">Cash</p>
                 </div>
               </div>

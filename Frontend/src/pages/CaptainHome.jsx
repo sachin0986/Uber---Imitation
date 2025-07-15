@@ -16,8 +16,9 @@ import { useContext } from "react";
 
 
 const CaptainHome = () => {
-    const [RidePopUpPanel, setRidePopUpPanel] = useState(true);
+    const [RidePopUpPanel, setRidePopUpPanel] = useState(false);
     const [ConfirmRidePopUpPanel, setConfirmRidePopUpPanel] = useState(false);
+    const [ride, setRide] = useState(null);
     const RidePopUpPanelRef = useRef(null);
     const ConfirmRidePopUpPanelRef = useRef(null);
 
@@ -61,6 +62,8 @@ const CaptainHome = () => {
 
     socket.on('new-ride', (data) =>{
         console.log(data);
+        setRide(data);
+        setRidePopUpPanel(true);
     })
 
 
@@ -115,7 +118,9 @@ else{
                <CaptionDetailsPanel />
             </div>
          <div ref={RidePopUpPanelRef} className="fixed w-full z-10 translate-y-full bg-white bottom-0 px-3 py-6">
-            <RidePopUp setRidePopUpPanel={setRidePopUpPanel} setConfirmRidePopUpPanel={setConfirmRidePopUpPanel}/>
+            <RidePopUp ride={ride}
+             setRidePopUpPanel={setRidePopUpPanel} 
+             setConfirmRidePopUpPanel={setConfirmRidePopUpPanel}/>
         </div>
         <div ref={ConfirmRidePopUpPanelRef} className="fixed h-screen w-full z-10 translate-y-full bg-white bottom-0 px-3 py-6">
             <ConfirmRidePopUpDetailsPanel setRidePopUpPanel={setRidePopUpPanel} setConfirmRidePopUpPanel={setConfirmRidePopUpPanel}/>

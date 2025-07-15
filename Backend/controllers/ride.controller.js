@@ -25,10 +25,13 @@ module.exports.createRide = async (req, res) => {
         const captainsInRadius = await mapService.getCaptainsInTheRadius(pickupCoordinates.ltd, pickupCoordinates.lng ,10);
         console.log(captainsInRadius);
         ride.otp = "";
+
+const rideWithUser = await rideModel.findOne({_id: ride._id}).populate('user');
+
         captainsInRadius.map(captain => { 
             sendMessageToSocketId(captain.socketId, {
                 event: 'new-ride',
-                data: ride
+                data: rideWithUser
             }) 
         })
     } catch (err) {
