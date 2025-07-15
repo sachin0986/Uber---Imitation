@@ -51,6 +51,7 @@ const RidePopUp = (props) => {
                 onClick={() => {
                   props.setRidePopUpPanel(false);
                   props.setConfirmRidePopUpPanel(true);
+                  props.confirmRide();
                 }}
                 className="w-1/2 font-semibold bg-black text-white rounded-lg p-2 mr-1 hover:bg-gray-900 transition-colors"
               >

@@ -17,8 +17,6 @@ import { useContext } from "react";
 import { useEffect } from "react";
 import { UserDataContext } from "../context/UserContext";
 
-
-
 const style = {
   inputStyle: `bg-[#eee] px-12 py-2 text-base rounded-lg w-full`,
   input2: `bg-[#eee] px-12 py-2 text-base rounded-lg w-full mt-5`,
@@ -30,13 +28,14 @@ const Home = () => {
   const [panelOpen, setPanelOpen] = useState(false);
   const [vehiclePanelOpen, setVehiclePanelOpen] = useState(false);
   const [ConfirmRidePanel, setConfirmRidePanel] = useState(false);
-  const [vehicleFound, setVehicleFound] = useState(false);
-  const [saerchingForDriver, setSaerchingForDriver] = useState(false);
+  const [vehicleFound, setVehicleFound] = useState(false); //looking for driver
+  const [saerchingForDriver, setSaerchingForDriver] = useState(false); //show driver details panel
   const [pickupSuggestions, setPickupSuggestions] = useState([]);
   const [destinationSuggestions, setDestinationSuggestions] = useState([]);
   const [activeField, setActiveField] = useState(null);
   const [fare, setFare] = useState({});
   const [vehicleType, setvehicleType] = useState(null);
+  const [ride, setRide] = useState(null);
 
   const panelRef = useRef(null);
   const panelCloseRef = useRef(null);
@@ -50,14 +49,19 @@ const Home = () => {
   //   setPanelOpen(false);
   //   setVehiclePanelOpen(true);
   // };
-    const { socket } = useContext(SocketContext);
- const { user } = useContext(UserDataContext);
+  const { socket } = useContext(SocketContext);
+  const { user } = useContext(UserDataContext);
 
-    useEffect(() => {
-      console.log(user);
-            socket.emit("join", { userType: 'user', userId: user._id });
-    }, [user]);
+  useEffect(() => {
+    console.log(user);
+    socket.emit("join", { userType: "user", userId: user._id });
+  }, [user]);
 
+  socket.on("ride-confirmed", (ride) => {
+    setSaerchingForDriver(true);
+    setVehicleFound(false);
+    setRide(ride);
+  });
 
   const handlePickupChange = async (e) => {
     setPickUp(e.target.value);
@@ -400,7 +404,10 @@ const Home = () => {
         className="fixed w-full z-10 translate-y-full bg-white bottom-0 px-3 py-6"
       >
         <div className="relative">
-          <SearchingForDriver setSaerchingForDriver={setSaerchingForDriver} />
+          <SearchingForDriver
+            ride={ride}
+            setSaerchingForDriver={setSaerchingForDriver}
+          />
         </div>
       </div>
     </div>
