@@ -12,6 +12,12 @@ import LookingForDriver from "../Components/LookingFroDriver";
 import SearchingForDriver from "../Components/SearchingForDriver";
 import { VITE_BASE_URL } from "../Utils/contants";
 import axios from "axios";
+import { SocketContext } from "../context/SocketContext";
+import { useContext } from "react";
+import { useEffect } from "react";
+import { UserDataContext } from "../context/UserContext";
+
+
 
 const style = {
   inputStyle: `bg-[#eee] px-12 py-2 text-base rounded-lg w-full`,
@@ -44,6 +50,14 @@ const Home = () => {
   //   setPanelOpen(false);
   //   setVehiclePanelOpen(true);
   // };
+    const { socket } = useContext(SocketContext);
+ const { user } = useContext(UserDataContext);
+
+    useEffect(() => {
+      console.log(user);
+            socket.emit("join", { userType: 'user', userId: user._id });
+    }, [user]);
+
 
   const handlePickupChange = async (e) => {
     setPickUp(e.target.value);
@@ -111,29 +125,32 @@ const Home = () => {
     console.log(response.data);
   }
 
- async function createRide() {
-  if (!pickup || !destination || !vehicleType) {
-    alert("Please select pickup, destination, and vehicle type.");
-    return;
+  async function createRide() {
+    if (!pickup || !destination || !vehicleType) {
+      alert("Please select pickup, destination, and vehicle type.");
+      return;
+    }
+    try {
+      const response = await axios.post(
+        `${VITE_BASE_URL}rides/create`,
+        {
+          pickup,
+          destination,
+          vehicleType,
+        },
+        {
+          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+        }
+      );
+      console.log(response.data);
+    } catch (error) {
+      console.error(
+        "Error creating ride:",
+        error.response?.data || error.message
+      );
+      alert(error.response?.data?.message || "Failed to create ride");
+    }
   }
-  try {
-    const response = await axios.post(
-      `${VITE_BASE_URL}rides/create`,
-      {
-        pickup,
-        destination,
-        vehicleType,
-      },
-      {
-        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-      }
-    );
-    console.log(response.data);
-  } catch (error) {
-    console.error("Error creating ride:", error.response?.data || error.message);
-    alert(error.response?.data?.message || "Failed to create ride");
-  }
-}
 
   const submitHandler = (e) => {
     e.preventDefault();
@@ -316,12 +333,12 @@ const Home = () => {
         className="fixed w-full z-10 bg-white translate-y-full bottom-0 px-3 py-6"
       >
         <VehiclePanel
-         setPanelOpen={setPanelOpen}
-  setConfirmRidePanel={setConfirmRidePanel}
-  setVehiclePanelOpen={setVehiclePanelOpen}
-  fare={fare}
-  createRide={createRide}
-  setvehicleType={setvehicleType}
+          setPanelOpen={setPanelOpen}
+          setConfirmRidePanel={setConfirmRidePanel}
+          setVehiclePanelOpen={setVehiclePanelOpen}
+          fare={fare}
+          createRide={createRide}
+          setvehicleType={setvehicleType}
         />
       </div>
 
@@ -341,13 +358,13 @@ const Home = () => {
           </h5>
           <ConfirmRide
             createRide={createRide}
-  setVehiclePanelOpen={setVehiclePanelOpen}
-  setConfirmRidePanel={setConfirmRidePanel}
-  setVehicleFound={setVehicleFound}
-  vehicleType={vehicleType}
-  pickup={pickup}
-  destination={destination}
-  fare={fare}
+            setVehiclePanelOpen={setVehiclePanelOpen}
+            setConfirmRidePanel={setConfirmRidePanel}
+            setVehicleFound={setVehicleFound}
+            vehicleType={vehicleType}
+            pickup={pickup}
+            destination={destination}
+            fare={fare}
           />
         </div>
       </div>
@@ -368,12 +385,12 @@ const Home = () => {
               Cancel Ride
             </span>
           </h5>
-          <LookingForDriver 
-           pickup={pickup}
-  destination={destination}
-  fare={fare}
-  vehicleType={vehicleType}
-    setvehicleType={setvehicleType}
+          <LookingForDriver
+            pickup={pickup}
+            destination={destination}
+            fare={fare}
+            vehicleType={vehicleType}
+            setvehicleType={setvehicleType}
           />
         </div>
       </div>

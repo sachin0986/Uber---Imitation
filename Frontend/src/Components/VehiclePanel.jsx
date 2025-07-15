@@ -18,7 +18,7 @@ const VehiclePanel = (props) => {
         onClick={() => {
           props.setConfirmRidePanel(true);
           props.setVehiclePanelOpen(false);
-          props.setvehicleType("car")
+          props.setvehicleType("car");
         }}
         className="flex w-full p-3 active:border-2  border-black mb-3 rounded-2xl items-center justify-between"
       >
@@ -45,7 +45,7 @@ const VehiclePanel = (props) => {
         onClick={() => {
           props.setConfirmRidePanel(true);
           props.setVehiclePanelOpen(false);
-          props.setvehicleType("bike")
+          props.setvehicleType("bike");
         }}
         className="flex w-full p-3 active:border-2 mb-3 border-black rounded-2xl items-center justify-between"
       >
@@ -72,7 +72,7 @@ const VehiclePanel = (props) => {
         onClick={() => {
           props.setConfirmRidePanel(true);
           props.setVehiclePanelOpen(false);
-          props.setvehicleType("auto")
+          props.setvehicleType("auto");
         }}
         className="flex w-full p-3 active:border-2 mb-3 border-black rounded-2xl items-center justify-between"
       >
