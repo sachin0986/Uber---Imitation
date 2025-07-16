@@ -139,7 +139,8 @@ else{
                <CaptionDetailsPanel />
             </div>
          <div ref={RidePopUpPanelRef} className="fixed w-full z-10 translate-y-full bg-white bottom-0 px-3 py-6">
-            <RidePopUp ride={ride}
+            <RidePopUp 
+            ride={ride}
              setRidePopUpPanel={setRidePopUpPanel} 
              setConfirmRidePopUpPanel={setConfirmRidePopUpPanel}
              confirmRide={confirmRide}

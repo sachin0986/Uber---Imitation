@@ -16,6 +16,7 @@ import { SocketContext } from "../context/SocketContext";
 import { useContext } from "react";
 import { useEffect } from "react";
 import { UserDataContext } from "../context/UserContext";
+import { useNavigate } from 'react-router-dom';
 
 const style = {
   inputStyle: `bg-[#eee] px-12 py-2 text-base rounded-lg w-full`,
@@ -37,12 +38,14 @@ const Home = () => {
   const [vehicleType, setvehicleType] = useState(null);
   const [ride, setRide] = useState(null);
 
+
   const panelRef = useRef(null);
   const panelCloseRef = useRef(null);
   const vehiclePanelRef = useRef(null);
   const ConfirmRidePanelRef = useRef(null);
   const vehicleFoundRef = useRef(null);
   const searchingForDriverRef = useRef(null);
+  const navigate = useNavigate();
 
   // Removed handelPanel as it's now handled by LocationSearchPanel
   // const handelPanel = () => {
@@ -62,6 +65,12 @@ const Home = () => {
     setVehicleFound(false);
     setRide(ride);
   });
+
+  socket.on('ride-started', ride => {
+    console.log("ride");
+    setSaerchingForDriver(false);
+    navigate('/riding', { state: { ride } }) 
+  })
 
   const handlePickupChange = async (e) => {
     setPickUp(e.target.value);

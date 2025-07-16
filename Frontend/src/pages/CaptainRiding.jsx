@@ -1,5 +1,5 @@
 import React, { useRef } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { IoMdExit } from "react-icons/io";
 import { RiArrowDownWideFill } from "react-icons/ri"
 import { RiArrowUpWideFill } from "react-icons/ri";
@@ -16,7 +16,9 @@ const CaptainRiding = () => {
     const [FinishRidePanel, setFinishRidePanel] = useState(false);
    // const RidingDetailsPanelRef = useRef(null);
     const FinishRideRef = useRef(null);
-
+    const location = useLocation();
+    const rideData = location.state?.ride
+  console.log(rideData);
 
 /*
   useGSAP(() => {
@@ -88,7 +90,9 @@ else{
 
 
                  <div ref={FinishRideRef} className="fixed h-[80%] w-full z-10 translate-y-full bg-white bottom-0 px-3 py-6">
-                    <FinishRide setFinishRidePanel={setFinishRidePanel}/>
+                    <FinishRide 
+                    ride={rideData}
+                    setFinishRidePanel={setFinishRidePanel}/>
                  </div>
         </div>
     )

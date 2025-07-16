@@ -4,10 +4,29 @@ import { GrLocationPin } from "react-icons/gr";
 import { RiUserLocationFill } from "react-icons/ri";
 import { BsCashStack } from "react-icons/bs";
 import { TbHomeUp } from "react-icons/tb";
-import { Link } from "react-router-dom"
+import { Link, useLocation } from "react-router-dom"
+import { useNavigate } from 'react-router-dom'
+import { useEffect, useContext } from 'react'
+import { SocketContext } from '../context/SocketContext'
 
 
 const Riding = () => {
+  const location = useLocation()
+    const { ride } = location.state || {} // Retrieve ride data
+    const { socket } = useContext(SocketContext)
+    const navigate = useNavigate()
+
+useEffect(() => {
+    if (!socket) return;
+    const handleRideEnded = () => {
+        navigate('/home');
+    };
+    socket.on("ride-ended", handleRideEnded);
+    return () => {
+        socket.off("ride-ended", handleRideEnded);
+    };
+}, [socket, navigate]);
+
     return(
       <div className="h-screen">
 
@@ -30,8 +49,8 @@ const Riding = () => {
                       <div className="flex items-center justify-between">
                                     <img className="h-20" src="https://www.uber-assets.com/image/upload/f_auto,q_auto:eco,c_fill,h_768,w_768/v1555367310/assets/30/51e602-10bb-4e65-b122-e394d80a9c47/original/Final_UberX.png" alt="" />
                                     <div className="text-right">
-                                        <h5 className="text-lg font-medium">Sachin Arora</h5>
-                                        <h4 className="text-xl font-semibold -mt-1 -mb-1">UP80 AB 1234</h4>
+                                        <h5 className="text-lg font-medium">{ride?.captain.fullname.firstname}</h5>
+                                        <h4 className="text-xl font-semibold -mt-1 -mb-1">{ride?.captain.vehicle.plate}</h4>
                                         <p className="text-sm text-gray-600">Schoda Slavia</p>
                                     </div>
                                 </div>
@@ -41,16 +60,15 @@ const Riding = () => {
                                   <div className="flex gap-3 items-center p-2 border-b-2 border-gray-300">
                                     <RiUserLocationFill size={20} />
                                     <div>
-                                      <h3 className="text-lg font-medium">10/6</h3>
                                       <p className="text-sm -mt-1 text-gray-600">
-                                        Tej Nagar Kamla Nagar
+                                        {ride?.destination}
                                       </p>
                                     </div>
                                   </div>
                                   <div className="flex gap-3 items-center p-2 border-b-1 border-gray-500">
                                     <BsCashStack size={20} />
                                     <div>
-                                      <h3 className="text-lg font-medium">₹ 193.20</h3>
+                                      <h3 className="text-lg font-medium">₹{ride?.fare}</h3>
                                       <p className="text-sm -mt-1 text-gray-600">Cash</p>
                                     </div>
                                   </div>

@@ -22,11 +22,11 @@ const SearchingForDriver = (props) => {
             <p className="text-sm text-gray-600">Schoda Slavia</p>
             <div className="flex gap-2 items-center justify-end">
               {props.ride?.otp && props.ride.otp.length === 4 ? (
-                <div className="flex gap-2">
+                <div className="flex gap-1">
                   {props.ride.otp.split("").map((digit, idx) => (
                     <span
                       key={idx}
-                      className="inline-block border font-mono border-gray-400 rounded-md px-2 py-1 text-sm bg-blue-500 text-white font-semibold"
+                      className="inline-block font-mono rounded-md px-2 py-1 text-sm bg-blue-500 text-white"
                     >
                       {digit}
                     </span>
