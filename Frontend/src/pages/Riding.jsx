@@ -8,6 +8,7 @@ import { Link, useLocation } from "react-router-dom"
 import { useNavigate } from 'react-router-dom'
 import { useEffect, useContext } from 'react'
 import { SocketContext } from '../context/SocketContext'
+import LiveTracking from "../Components/LiveTracking";
 
 
 const Riding = () => {
@@ -40,10 +41,7 @@ useEffect(() => {
         alt="uber-logo"
       />
             <div className="h-1/2">
-                <img
-          className="h-full w-full object-cover"
-          src="https://miro.medium.com/v2/resize:fit:1400/0*gwMx05pqII5hbfmX.gif"
-          alt="map-image" />
+                <LiveTracking />
             </div>
             <div className="h-1/2 p-4">
                       <div className="flex items-center justify-between">

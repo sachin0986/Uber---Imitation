@@ -14,6 +14,7 @@ import { CaptainDataContext } from "../context/CaptainContext";
 import { useContext } from "react";
 import axios from "axios";
 import { VITE_BASE_URL } from "../Utils/contants";
+import LiveTracking from "../Components/LiveTracking";
 
 
 
@@ -129,11 +130,7 @@ else{
                 alt="uber-driver-logo"
             />
             <div className="h-3/5">
-                <img
-                    className="h-full w-full object-cover"
-                    src="https://miro.medium.com/v2/resize:fit:1400/0*gwMx05pqII5hbfmX.gif"
-                    alt="map-image"
-                />
+                <LiveTracking />
             </div>
             <div className="h-2/5 p-6">
                <CaptionDetailsPanel />

@@ -17,6 +17,7 @@ import { useContext } from "react";
 import { useEffect } from "react";
 import { UserDataContext } from "../context/UserContext";
 import { useNavigate } from 'react-router-dom';
+import LiveTracking from "../Components/LiveTracking";
 
 const style = {
   inputStyle: `bg-[#eee] px-12 py-2 text-base rounded-lg w-full`,
@@ -253,11 +254,7 @@ const Home = () => {
       />
 
       <div className="h-screen w-screen">
-        <img
-          className="h-full w-full object-cover"
-          src="https://miro.medium.com/v2/resize:fit:1400/0*gwMx05pqII5hbfmX.gif"
-          alt="map-image"
-        />
+       <LiveTracking />
 
         <div className="w-full flex flex-col justify-end h-screen absolute top-0">
           <div className="h-[30%] p-6 bg-white relative">

@@ -8,6 +8,7 @@ import gsap from "gsap";
 import { useState } from "react";
 import FinishRide from "../Components/FinishRide";
 import RidingDetailsPanel from "../Components/RidingDetailsPanel";
+import LiveTracking from "../Components/LiveTracking";
 
 
 
@@ -69,11 +70,7 @@ else{
                 alt="uber-driver-logo"
             />
             <div className="h-5/6">
-                <img
-                    className="h-full w-full object-cover"
-                    src="https://miro.medium.com/v2/resize:fit:1400/0*gwMx05pqII5hbfmX.gif"
-                    alt="map-image"
-                />
+                <LiveTracking />
             </div>
             
             {/*<div ref={RidingDetailsPanelRef}
